@@ -30,9 +30,11 @@ import { LANGS, RTL_LANGS, LOCALE_MAP, t, type Lang } from "./i18n";
 
 
 /** ---- Helpers ---- */
-function useLocalTime() {
-  const [now, setNow] = React.useState(new Date());
+function useLocalTime(): Date | null {
+  const [now, setNow] = React.useState<Date | null>(null);
+
   React.useEffect(() => {
+    setNow(new Date());
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
@@ -91,7 +93,9 @@ export default function App() {
 
   const now = useLocalTime();
   const dateLocale = LOCALE_MAP[lang] ?? LOCALE_MAP.en;
-  const dateStr = now.toLocaleString(dateLocale, { dateStyle: "full", timeStyle: "short" });
+  const dateStr = now
+    ? now.toLocaleString(dateLocale, { dateStyle: "full", timeStyle: "short" })
+    : "—";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
