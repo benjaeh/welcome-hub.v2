@@ -203,7 +203,7 @@ export default function App() {
               <Input
                 id="searchBox"
                 placeholder={t(lang, "searchPlaceholder")}
-                className="rounded-2xl py-6 text-base"
+                className="rounded-2xl py-6 text-base text-white placeholder:text-white"
               />
               <Button className="rounded-2xl px-6 h-12 text-base">
                 <Search className="w-5 h-5 mr-2" />
