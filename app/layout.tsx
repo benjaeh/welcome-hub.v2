@@ -16,7 +16,9 @@ export const metadata: Metadata = {
   title: "Welcome Hub",
   description: "International Student Portal by Communiteer",
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png" }],
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "210x210" }
+    ],
   },
 };
 
