@@ -178,10 +178,6 @@ export default function App() {
             sizes="100vw"
             className="w-full h-auto"
           />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent via-white/80 to-white"
-          />
         </div>
         <section className="relative bg-white">
           <div className="max-w-6xl mx-auto px-4 pt-12 sm:pt-20 pb-12">
