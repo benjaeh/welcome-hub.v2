@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -14,7 +13,6 @@ import {
   PhoneCall,
   Search,
   Megaphone,
-  QrCode,
   ClipboardList,
   Info,
   LifeBuoy,
@@ -25,7 +23,6 @@ import {
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import Image from "next/image";
-import ImageSlider from "@/components/ImageSlider";
 import { LANGS, RTL_LANGS, LOCALE_MAP, t, type Lang } from "./i18n";
 
 
@@ -64,15 +61,26 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, 
   return <button className="w-full text-left h-full" onClick={onClick}>{body}</button>;
 };
 
-const PillButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, ...props }) => (
-  <button {...props} className={`px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 active:opacity-80 transition ${props.className ?? ""}`}>{children}</button>
-);
-
 // Temporary demo announcements
-const DEMO_ANNOUNCEMENTS = [
-  { id: 1, key: "announcement1" },
-  { id: 2, key: "announcement2" },
-  { id: 3, key: "announcement3" },
+const UPCOMING_ACTIVITIES = [
+  {
+    id: "orientation",
+    title: "Guided orientation tours",
+    schedule: "Today · 10:00 AM & 2:00 PM",
+    description: "Join our volunteers for a 20-minute walk-through of key services and study essentials.",
+  },
+  {
+    id: "lounge",
+    title: "Student lounge pop-up",
+    schedule: "Today · 12:30 PM",
+    description: "Grab a snack, meet other arrivals, and discover weekly student meetups in the lounge zone.",
+  },
+  {
+    id: "briefing",
+    title: "Volunteer briefing",
+    schedule: "Tomorrow · 9:00 AM",
+    description: "Interested in helping out? Meet the Communiteer team and learn how to get involved.",
+  },
 ];
 
 
@@ -189,73 +197,85 @@ export default function App() {
                 transition: "transform 0.4s ease, opacity 0.4s ease",
               }}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <Card className="lg:col-span-2 rounded-3xl">
-                  <CardContent className="p-6 lg:p-8">
-                    <div className="flex flex-col lg:flex-row lg:items-center gap-6">
-                      <div className="rounded-3xl w-full lg:w-2/3 aspect-[4/3] relative overflow-hidden min-h-[280px]">
-                        <ImageSlider
-                          slides={[
-                            { src: "/hero/01.jpg", alt: "Welcome Desk volunteers helping arrivals" },
-                            { src: "/hero/02.jpg", alt: "Smiling student ambassadors at the counter" },
-                            { src: "/hero/03.jpg", alt: "Students getting info about transport and TFN" },
-                          ]}
-                          interval={6000}
-                        />
+              <div className="rounded-3xl bg-white/95 shadow-xl ring-1 ring-slate-100 p-10 md:p-16 space-y-12">
+                <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
+                  <div className="space-y-8">
+                    <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-slate-900">
+                      Welcome to the International Student Hub
+                    </h1>
+                    <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
+                      Check in, access support, and explore programs built for international students across NSW.
+                    </p>
+                    <div className="flex flex-wrap gap-4 pt-2">
+                      <button
+                        type="button"
+                        aria-label="Check in to the International Student Hub"
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 transition"
+                        onClick={() => window.open("https://example.org/check-in", "_blank")}
+                      >
+                        Check-In
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Ask for help at the International Student Hub"
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 transition"
+                        onClick={() => window.open("mailto:support@example.org", "_blank")}
+                      >
+                        Ask for Help
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Explore programs for international students"
+                        className="inline-flex items-center justify-center px-6 py-3 rounded-full font-medium text-white bg-teal-600 hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500 transition"
+                        onClick={() => window.open("https://www.study.nsw.gov.au/", "_blank")}
+                      >
+                        Explore Programs
+                      </button>
+                    </div>
+                  </div>
+                  <aside className="space-y-6">
+                    <div className="rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur p-6 space-y-5">
+                      <div className="flex items-center gap-2 text-slate-700">
+                        <CalendarDays className="w-5 h-5" />
+                        <span className="font-semibold">Local time &amp; date</span>
                       </div>
-                      <div className="flex-1 space-y-3">
-                        <h1 className="text-3xl md:text-4xl font-bold leading-tight">{t(lang, "welcome")}</h1>
-                        <p className="text-muted-foreground">{t(lang, "heroIntro")}</p>
-                        <div className="flex flex-wrap gap-3">
-                          <PillButton onClick={() => document.getElementById("searchBox")?.focus()}>
-                            <Search className="inline w-4 h-4 mr-2" />
-                            {t(lang, "btnSearch")}
-                          </PillButton>
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <PillButton>
-                                <QrCode className="inline w-4 h-4 mr-2" />
-                                {t(lang, "btnShowQr")}
-                              </PillButton>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[440px]">
-                              <DialogHeader>
-                                <DialogTitle>{t(lang, "checkinModalTitle")}</DialogTitle>
-                                <DialogDescription>{t(lang, "checkinModalDesc")}</DialogDescription>
-                              </DialogHeader>
-                              <div className="flex justify-center py-4">
-                                <QRCodeSVG value="https://example.org/check-in" size={256} includeMargin />
-                              </div>
-                            </DialogContent>
-                          </Dialog>
+                      <div className="text-2xl font-bold text-slate-900">{dateStr}</div>
+                    </div>
+                  </aside>
+                </div>
+                <div className="space-y-6">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                    <div className="space-y-1.5">
+                      <h2 className="text-2xl font-semibold text-slate-900">What’s on today</h2>
+                      <p className="text-sm text-muted-foreground">
+                        Updates for international students visiting the Welcome Hub
+                      </p>
+                    </div>
+                    <a
+                      href="https://www.study.nsw.gov.au/events"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm font-medium text-teal-600 hover:text-teal-700 transition inline-flex items-center gap-1"
+                    >
+                      View all announcements <span aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {UPCOMING_ACTIVITIES.map((activity) => (
+                      <div
+                        key={activity.id}
+                        className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-3 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="text-lg font-semibold text-slate-900">{activity.title}</h3>
+                          <Megaphone className="h-4 w-4 text-teal-500 shrink-0" aria-hidden="true" />
                         </div>
+                        <p className="text-sm font-medium text-slate-600">{activity.schedule}</p>
+                        <p className="text-sm text-muted-foreground">{activity.description}</p>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-3xl">
-                  <CardContent className="p-6 space-y-3">
-                    <div className="flex items-center gap-2">
-                      <CalendarDays className="w-5 h-5" />
-                      <span className="font-semibold">{t(lang, "localTime")}</span>
-                    </div>
-                    <div className="text-2xl font-bold">{dateStr}</div>
-                    <Separator />
-                    <div className="flex items-center gap-2">
-                      <Megaphone className="w-5 h-5" />
-                      <span className="font-semibold">{t(lang, "announcements")}</span>
-                    </div>
-                    <div className="space-y-2">
-                      {DEMO_ANNOUNCEMENTS.map((a) => (
-                        <Alert key={a.id} className="rounded-xl">
-                          <AlertTitle>{t(lang, "announcementUpdate")}</AlertTitle>
-                          <AlertDescription>{t(lang, a.key)}</AlertDescription>
-                        </Alert>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
