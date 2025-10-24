@@ -178,21 +178,15 @@ export default function App() {
             sizes="100vw"
             className="w-full h-auto"
           />
+        </div>
+        <div className="relative">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                  "linear-gradient(to bottom, rgba(255,255,255,0) 80%, rgba(255,255,255,0.08) 84%, rgba(255,255,255,0.22) 87%, rgba(255,255,255,0.55) 96%, rgba(255,255,255,0.88) 98%)",
-            }}
+            className="pointer-events-none absolute inset-x-0 -top-10 h-50 bg-white shadow-[0_-18px_35px_-22px_rgba(15,23,42,0.4)]"
           />
         </div>
-        <div
-          aria-hidden="true"
-          className="pointer-events-none -mt-10 h-14 w-full bg-white relative z-0 sm:-mt-12 sm:h-16 md:-mt-14 md:h-20"
-        />
-        <section className="relative bg-white shadow-[0_-16px_40px_-35px_rgba(15,23,42,0.35)]">
-          <div className="max-w-6xl mx-auto px-4 pt-10 sm:pt-16 pb-12">
+        <section className="relative bg-white">
+          <div className="max-w-6xl mx-auto px-4 pt-12 sm:pt-20 pb-12">
             <div
               ref={cardsRef}
               className="relative z-10"
