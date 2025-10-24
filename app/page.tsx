@@ -179,12 +179,6 @@ export default function App() {
             className="w-full h-auto"
           />
         </div>
-        <div className="relative">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 -top-10 h-50 bg-white shadow-[0_-18px_35px_-22px_rgba(15,23,42,0.4)]"
-          />
-        </div>
         <section className="relative bg-white">
           <div className="max-w-6xl mx-auto px-4 pt-12 sm:pt-20 pb-12">
             <div
