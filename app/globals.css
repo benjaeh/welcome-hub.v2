@@ -120,3 +120,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+.hero-graphic {
+  background-image: url("/hero/social.png");
+  background-size: cover;
+  background-position: center;
+}
+
+@media (max-width: 640px) {
+  .hero-graphic {
+    background-position: top center;
+    background-size: 140%;
+  }
+}

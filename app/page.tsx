@@ -169,12 +169,7 @@ export default function App() {
         }}
       >
         <div
-          className="relative z-10 w-full overflow-hidden h-[440px] sm:h-[580px] md:h-[620px]"
-          style={{
-            backgroundImage: "url('/hero/social.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          className="hero-graphic relative z-10 w-full overflow-hidden h-[440px] sm:h-[580px] md:h-[620px]"
           role="img"
           aria-label="Students gathering at Study NSW Welcome Hub"
         />
