@@ -130,6 +130,6 @@
 @media (max-width: 640px) {
   .hero-graphic {
     background-position: top center;
-    background-size: 140%;
+    background-size: 125%;
   }
 }
