@@ -168,7 +168,7 @@ export default function App() {
           backgroundSize: "cover",
         }}
       >
-        <div className="relative z-10 w-full overflow-hidden h-[520px] sm:h-[620px]">
+        <div className="relative z-10 w-full overflow-hidden h-[440px] sm:h-[580px] md:h-[620px]">
           <Image
             src="/hero/social.png"
             alt="Students gathering at Study NSW Welcome Hub"
