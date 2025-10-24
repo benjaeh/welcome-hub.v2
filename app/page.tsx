@@ -96,17 +96,57 @@ export default function App() {
   const dateStr = now
     ? now.toLocaleString(dateLocale, { dateStyle: "full", timeStyle: "short" })
     : "—";
+  const cardsRef = React.useRef<HTMLDivElement>(null);
+  const [cardsVisible, setCardsVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const target = cardsRef.current;
+    if (!target) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setCardsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  const cardsTransform = cardsVisible ? "translateY(0)" : "translateY(40px)";
+  const cardsOpacity = cardsVisible ? 1 : 0;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="w-full bg-white shadow-sm">
-        <div className="max-w-6xl mx-auto flex justify-between items-center py-3 px-4">
-          <Image src="/communiteer.png" alt="Communiteer" width={150} height={40} priority />
-          <div className="relative">
+        <div className="w-full flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:px-12">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+            <Image
+              src="/communiteer.png"
+              alt="Communiteer"
+              width={240}
+              height={100}
+              priority
+              className="h-[40px] w-auto md:h-[44px]"
+            />
+            <div className="h-[40px] w-px bg-slate-200 md:h-[44px]" aria-hidden="true" />
+            <Image
+              src="/study-nsw.png"
+              alt="Study NSW"
+              width={200}
+              height={90}
+              className="h-[34px] w-auto md:h-[38px]"
+            />
+          </div>
+          <div className="relative self-start sm:self-auto">
             <select
               value={lang}
               onChange={(e) => setLang(e.target.value as Lang)}
-              className="appearance-none rounded-full border border-white/60 bg-white/90 px-4 pr-10 py-2 text-sm font-medium text-slate-800 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent hover:border-emerald-200"
+              className="appearance-none rounded-full border border-white/60 bg-white/90 px-5 pr-12 py-2.5 text-base font-medium text-slate-800 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent hover:border-emerald-200"
               aria-label="Language selector"
             >
               {LANGS.map((l) => (
@@ -115,7 +155,7 @@ export default function App() {
                 </option>
               ))}
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+            <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
           </div>
         </div>
       </header>
@@ -128,76 +168,113 @@ export default function App() {
           backgroundSize: "cover",
         }}
       >
-        <div className="max-w-6xl mx-auto px-4 py-6 space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2 rounded-3xl">
-              <CardContent className="p-6 lg:p-8">
-                <div className="flex flex-col lg:flex-row lg:items-center gap-6">
-                  <div className="rounded-3xl w-full lg:w-2/3 aspect-[4/3] relative overflow-hidden min-h-[280px]">
-                    <ImageSlider
-                      slides={[
-                        { src: "/hero/01.jpg", alt: "Welcome Desk volunteers helping arrivals" },
-                        { src: "/hero/02.jpg", alt: "Smiling student ambassadors at the counter" },
-                        { src: "/hero/03.jpg", alt: "Students getting info about transport and TFN" },
-                      ]}
-                      interval={6000}
-                    />
-                  </div>
-                  <div className="flex-1 space-y-3">
-                    <h1 className="text-3xl md:text-4xl font-bold leading-tight">{t(lang, "welcome")}</h1>
-                    <p className="text-muted-foreground">{t(lang, "heroIntro")}</p>
-                    <div className="flex flex-wrap gap-3">
-                      <PillButton onClick={() => document.getElementById("searchBox")?.focus()}>
-                        <Search className="inline w-4 h-4 mr-2" />
-                        {t(lang, "btnSearch")}
-                      </PillButton>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <PillButton>
-                            <QrCode className="inline w-4 h-4 mr-2" />
-                            {t(lang, "btnShowQr")}
+        <div className="relative z-10 w-full overflow-hidden min-h-[520px] sm:min-h-[620px]">
+          <Image
+            src="/hero/social.png"
+            alt="Students gathering at Study NSW Welcome Hub"
+            width={3024}
+            height={1362}
+            priority
+            sizes="100vw"
+            className="w-full h-auto"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                  "linear-gradient(to bottom, rgba(255,255,255,0) 80%, rgba(255,255,255,0.08) 84%, rgba(255,255,255,0.22) 87%, rgba(255,255,255,0.55) 96%, rgba(255,255,255,0.88) 98%)",
+            }}
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          className="pointer-events-none -mt-10 h-14 w-full bg-white relative z-0 sm:-mt-12 sm:h-16 md:-mt-14 md:h-20"
+        />
+        <section className="relative bg-white shadow-[0_-16px_40px_-35px_rgba(15,23,42,0.35)]">
+          <div className="max-w-6xl mx-auto px-4 pt-10 sm:pt-16 pb-12">
+            <div
+              ref={cardsRef}
+              className="relative z-10"
+              style={{
+                transform: cardsTransform,
+                opacity: cardsOpacity,
+                transition: "transform 0.4s ease, opacity 0.4s ease",
+              }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card className="lg:col-span-2 rounded-3xl">
+                  <CardContent className="p-6 lg:p-8">
+                    <div className="flex flex-col lg:flex-row lg:items-center gap-6">
+                      <div className="rounded-3xl w-full lg:w-2/3 aspect-[4/3] relative overflow-hidden min-h-[280px]">
+                        <ImageSlider
+                          slides={[
+                            { src: "/hero/01.jpg", alt: "Welcome Desk volunteers helping arrivals" },
+                            { src: "/hero/02.jpg", alt: "Smiling student ambassadors at the counter" },
+                            { src: "/hero/03.jpg", alt: "Students getting info about transport and TFN" },
+                          ]}
+                          interval={6000}
+                        />
+                      </div>
+                      <div className="flex-1 space-y-3">
+                        <h1 className="text-3xl md:text-4xl font-bold leading-tight">{t(lang, "welcome")}</h1>
+                        <p className="text-muted-foreground">{t(lang, "heroIntro")}</p>
+                        <div className="flex flex-wrap gap-3">
+                          <PillButton onClick={() => document.getElementById("searchBox")?.focus()}>
+                            <Search className="inline w-4 h-4 mr-2" />
+                            {t(lang, "btnSearch")}
                           </PillButton>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[440px]">
-                          <DialogHeader>
-                            <DialogTitle>{t(lang, "checkinModalTitle")}</DialogTitle>
-                            <DialogDescription>{t(lang, "checkinModalDesc")}</DialogDescription>
-                          </DialogHeader>
-                          <div className="flex justify-center py-4">
-                            <QRCodeSVG value="https://example.org/check-in" size={256} includeMargin />
-                          </div>
-                        </DialogContent>
-                      </Dialog>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <PillButton>
+                                <QrCode className="inline w-4 h-4 mr-2" />
+                                {t(lang, "btnShowQr")}
+                              </PillButton>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[440px]">
+                              <DialogHeader>
+                                <DialogTitle>{t(lang, "checkinModalTitle")}</DialogTitle>
+                                <DialogDescription>{t(lang, "checkinModalDesc")}</DialogDescription>
+                              </DialogHeader>
+                              <div className="flex justify-center py-4">
+                                <QRCodeSVG value="https://example.org/check-in" size={256} includeMargin />
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
 
-            <Card className="rounded-3xl">
-              <CardContent className="p-6 space-y-3">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="w-5 h-5" />
-                  <span className="font-semibold">{t(lang, "localTime")}</span>
-                </div>
-                <div className="text-2xl font-bold">{dateStr}</div>
-                <Separator />
-                <div className="flex items-center gap-2">
-                  <Megaphone className="w-5 h-5" />
-                  <span className="font-semibold">{t(lang, "announcements")}</span>
-                </div>
-                <div className="space-y-2">
-                  {DEMO_ANNOUNCEMENTS.map((a) => (
-                    <Alert key={a.id} className="rounded-xl">
-                      <AlertTitle>{t(lang, "announcementUpdate")}</AlertTitle>
-                      <AlertDescription>{t(lang, a.key)}</AlertDescription>
-                    </Alert>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                <Card className="rounded-3xl">
+                  <CardContent className="p-6 space-y-3">
+                    <div className="flex items-center gap-2">
+                      <CalendarDays className="w-5 h-5" />
+                      <span className="font-semibold">{t(lang, "localTime")}</span>
+                    </div>
+                    <div className="text-2xl font-bold">{dateStr}</div>
+                    <Separator />
+                    <div className="flex items-center gap-2">
+                      <Megaphone className="w-5 h-5" />
+                      <span className="font-semibold">{t(lang, "announcements")}</span>
+                    </div>
+                    <div className="space-y-2">
+                      {DEMO_ANNOUNCEMENTS.map((a) => (
+                        <Alert key={a.id} className="rounded-xl">
+                          <AlertTitle>{t(lang, "announcementUpdate")}</AlertTitle>
+                          <AlertDescription>{t(lang, a.key)}</AlertDescription>
+                        </Alert>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </div>
+        </section>
 
+        <div className="max-w-6xl mx-auto px-4 pt-10 pb-12 space-y-10">
           <div>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Input
@@ -293,26 +370,26 @@ export default function App() {
               </CardContent>
             </Card>
           </div>
-
-          <footer className="px-0 py-8 text-sm text-muted-foreground">
-            <Separator className="mb-4" />
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Badge variant="secondary">{t(lang, "footerBadge")}</Badge>
-                <span>{t(lang, "footerBlurb")}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <a className="underline" href="https://www.study.nsw.gov.au/" target="_blank" rel="noreferrer">
-                  study.nsw.gov.au
-                </a>
-                <span>•</span>
-                <a className="underline" href="https://communiteer.org/" target="_blank" rel="noreferrer">
-                  communiteer.org
-                </a>
-              </div>
-            </div>
-          </footer>
         </div>
+
+        <footer className="px-0 py-8 text-sm text-muted-foreground">
+          <Separator className="mb-4" />
+          <div className="max-w-6xl mx-auto px-4 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary">{t(lang, "footerBadge")}</Badge>
+              <span>{t(lang, "footerBlurb")}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <a className="underline" href="https://www.study.nsw.gov.au/" target="_blank" rel="noreferrer">
+                study.nsw.gov.au
+              </a>
+              <span>•</span>
+              <a className="underline" href="https://communiteer.org/" target="_blank" rel="noreferrer">
+                communiteer.org
+              </a>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   );
