@@ -168,15 +168,14 @@ export default function App() {
           backgroundSize: "cover",
         }}
       >
-        <div className="relative z-10 w-full overflow-hidden min-h-[520px] sm:min-h-[620px]">
+        <div className="relative z-10 w-full overflow-hidden h-[520px] sm:h-[620px]">
           <Image
             src="/hero/social.png"
             alt="Students gathering at Study NSW Welcome Hub"
-            width={3024}
-            height={1362}
+            fill
             priority
             sizes="100vw"
-            className="w-full h-auto"
+            className="object-cover object-center"
           />
         </div>
         <section className="relative bg-white">
