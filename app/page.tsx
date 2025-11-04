@@ -176,18 +176,12 @@ export default function App() {
           backgroundSize: "cover",
         }}
       >
-        <div className="relative z-10 w-full overflow-hidden min-h-[520px] sm:min-h-[620px]">
-          <Image
-            src="/hero/social.png"
-            alt="Students gathering at Study NSW Welcome Hub"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
+        <section className="relative">
+          <div
+            className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,#7cc5e6_0%,#41c39c_55%,#29a084_100%)]"
+            aria-hidden="true"
           />
-        </div>
-        <section className="relative bg-white">
-          <div className="max-w-6xl mx-auto px-4 pt-12 sm:pt-20 pb-12">
+          <div className="max-w-6xl mx-auto px-4 pt-10 sm:pt-14 pb-12">
             <div
               ref={cardsRef}
               className="relative z-10"
@@ -197,7 +191,7 @@ export default function App() {
                 transition: "transform 0.4s ease, opacity 0.4s ease",
               }}
             >
-              <div className="rounded-3xl bg-white/95 shadow-xl ring-1 ring-slate-100 p-10 md:p-16 space-y-12">
+              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-10 md:p-16 space-y-12 backdrop-blur">
                 <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
                   <div className="space-y-8">
                     <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-slate-900">
