@@ -1315,13 +1315,13 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-                  <aside className="space-y-4">
-                    <div className="rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur p-4 md:p-5 space-y-3">
-                      <div className="flex items-center gap-2 text-slate-700">
-                        <CalendarDays className="w-5 h-5" />
+                  <aside>
+                    <div className="rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur px-3 py-3 md:px-4 md:py-4 space-y-2">
+                      <div className="flex items-center gap-2 text-sm md:text-base text-slate-700">
+                        <CalendarDays className="w-4 h-4 md:w-5 md:h-5" />
                         <span className="font-semibold">{t(lang, "localTime")}</span>
                       </div>
-                      <div className="text-xl md:text-2xl font-bold text-slate-900 leading-snug">{dateStr}</div>
+                      <div className="text-lg md:text-xl font-bold text-slate-900 leading-tight">{dateStr}</div>
                     </div>
                   </aside>
                 </div>
