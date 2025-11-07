@@ -900,7 +900,7 @@ export default function App() {
             className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,#7cc5e6_0%,#41c39c_55%,#29a084_100%)]"
             aria-hidden="true"
           />
-          <div className="max-w-6xl mx-auto px-4 pt-8 sm:pt-10 pb-16">
+          <div className="max-w-6xl mx-auto px-4 pt-6 sm:pt-8 pb-16">
             <div
               ref={cardsRef}
               className="relative z-10"
