@@ -904,8 +904,8 @@ export default function App() {
                 transition: "transform 0.4s ease, opacity 0.4s ease",
               }}
             >
-              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-8 md:p-12 space-y-8 backdrop-blur">
-                <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
+              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-8 md:p-12 space-y-8 backdrop-blur max-w-4xl mx-auto">
+                <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,320px)] items-start">
                   <div className="space-y-8">
                     <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-slate-900">
                       {t(lang, "welcome")}
