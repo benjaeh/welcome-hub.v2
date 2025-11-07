@@ -11,18 +11,13 @@ import { Separator } from "@/components/ui/separator";
 import {
   BookOpen,
   HeartHandshake,
-  PhoneCall,
-  Search,
   Megaphone,
   ClipboardList,
   Info,
-  LifeBuoy,
   ChevronRight,
   ChevronDown,
-  Mailbox,
   CalendarDays,
 } from "lucide-react";
-import { QRCodeSVG } from "qrcode.react";
 import Image from "next/image";
 import { LANGS, RTL_LANGS, LOCALE_MAP, t, type Lang } from "./i18n";
 
@@ -64,9 +59,25 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, 
 
 const HERO_INFO_CARDS = [
   { id: "guide", titleKey: "guideTitle", icon: BookOpen, href: "https://example.org/welcome-guide" },
-  { id: "sns", titleKey: "snsTitle", icon: Info, href: "https://www.study.nsw.gov.au/" },
   { id: "comm", titleKey: "commTitle", icon: HeartHandshake, href: "https://communiteer.org/" },
+  { id: "sns", titleKey: "snsTitle", icon: Info, href: "https://www.study.nsw.gov.au/" },
 ] as const;
+
+type EoiFormState = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  interest: string;
+  details: string;
+};
+
+const EOI_FORM_DEFAULT: EoiFormState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  interest: "",
+  details: "",
+};
 
 // Temporary demo announcements
 const UPCOMING_ACTIVITIES = [
@@ -627,6 +638,11 @@ export default function App() {
   const [phoneCodeSearchVisible, setPhoneCodeSearchVisible] = React.useState(false);
   const checkinSuccessTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const checkinCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isEoiOpen, setIsEoiOpen] = React.useState(false);
+  const [eoiForm, setEoiForm] = React.useState<EoiFormState>(EOI_FORM_DEFAULT);
+  const [isSubmittingEoi, setIsSubmittingEoi] = React.useState(false);
+  const [eoiError, setEoiError] = React.useState<string | null>(null);
+  const [eoiSuccess, setEoiSuccess] = React.useState(false);
 
   React.useEffect(() => {
     const target = cardsRef.current;
@@ -718,6 +734,13 @@ export default function App() {
   function handlePhoneCountryCodeChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
     setCheckinForm((prev) => ({ ...prev, phoneCountryCode: value }));
+  }
+
+  function handleEoiInputChange<K extends keyof EoiFormState>(key: K) {
+    return (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const value = event.target.value;
+      setEoiForm((prev) => ({ ...prev, [key]: value }));
+    };
   }
 
   function handleCheckinRatingChange<K extends keyof CheckinFormState>(key: K, value: string) {
@@ -844,6 +867,53 @@ export default function App() {
       setCheckinError(message);
     } finally {
       setIsSubmittingCheckin(false);
+    }
+  }
+
+  async function handleEoiSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (isSubmittingEoi) return;
+    setIsSubmittingEoi(true);
+    setEoiError(null);
+
+    const trimmed = {
+      firstName: eoiForm.firstName.trim(),
+      lastName: eoiForm.lastName.trim(),
+      email: eoiForm.email.trim(),
+      interest: eoiForm.interest.trim(),
+      details: eoiForm.details.trim(),
+    };
+
+    try {
+      if (!trimmed.firstName || !trimmed.lastName) {
+        throw new Error(t(lang, "formErrorName"));
+      }
+      if (!trimmed.email) {
+        throw new Error(t(lang, "formErrorPrimaryEmail"));
+      }
+      if (!trimmed.interest) {
+        throw new Error(t(lang, "eoiErrorInterest"));
+      }
+
+      const response = await fetch("/api/eoi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...trimmed, lang }),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(payload?.error ?? t(lang, "eoiErrorGeneric"));
+      }
+
+      setEoiForm(EOI_FORM_DEFAULT);
+      setEoiSuccess(true);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : t(lang, "eoiErrorGeneric");
+      setEoiError(message);
+      setEoiSuccess(false);
+    } finally {
+      setIsSubmittingEoi(false);
     }
   }
 
@@ -1350,6 +1420,113 @@ export default function App() {
                           </a>
                         );
                       })}
+                      <Dialog
+                        open={isEoiOpen}
+                        onOpenChange={(open) => {
+                          setIsEoiOpen(open);
+                          if (!open) {
+                            setEoiError(null);
+                            setEoiSuccess(false);
+                            setEoiForm(EOI_FORM_DEFAULT);
+                            setIsSubmittingEoi(false);
+                          }
+                        }}
+                      >
+                        <DialogTrigger asChild>
+                          <button className="w-full rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-left text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md">
+                            <span className="flex items-center gap-2">
+                              <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
+                                <ClipboardList className="w-4 h-4" />
+                              </span>
+                              {t(lang, "newsletterTitle")}
+                            </span>
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[460px]">
+                          <DialogHeader className="space-y-3">
+                            <DialogTitle>{t(lang, "newsletterModalTitle")}</DialogTitle>
+                            <DialogDescription>{t(lang, "newsletterModalDesc")}</DialogDescription>
+                            <p className="text-xs text-muted-foreground">
+                              {t(lang, "eoiHelperBlurb")}
+                            </p>
+                          </DialogHeader>
+                          {eoiError ? (
+                            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                              {eoiError}
+                            </div>
+                          ) : null}
+                          {eoiSuccess ? (
+                            <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm font-medium text-emerald-800">
+                              {t(lang, "eoiSuccess")}
+                            </div>
+                          ) : (
+                            <form onSubmit={handleEoiSubmit} className="space-y-4">
+                              <div className="grid gap-1.5">
+                                <Label htmlFor="eoi-first-name" className={LABEL_CLASS}>
+                                  {t(lang, "formFirstNameLabel")} <span className="text-red-500">*</span>
+                                </Label>
+                                <Input
+                                  id="eoi-first-name"
+                                  value={eoiForm.firstName}
+                                  onChange={handleEoiInputChange("firstName")}
+                                  className={FIELD_CLASS}
+                                />
+                              </div>
+                              <div className="grid gap-1.5">
+                                <Label htmlFor="eoi-last-name" className={LABEL_CLASS}>
+                                  {t(lang, "formLastNameLabel")} <span className="text-red-500">*</span>
+                                </Label>
+                                <Input
+                                  id="eoi-last-name"
+                                  value={eoiForm.lastName}
+                                  onChange={handleEoiInputChange("lastName")}
+                                  className={FIELD_CLASS}
+                                />
+                              </div>
+                              <div className="grid gap-1.5">
+                                <Label htmlFor="eoi-email" className={LABEL_CLASS}>
+                                  {t(lang, "formPrimaryEmailLabel")} <span className="text-red-500">*</span>
+                                </Label>
+                                <Input
+                                  id="eoi-email"
+                                  type="email"
+                                  value={eoiForm.email}
+                                  onChange={handleEoiInputChange("email")}
+                                  className={FIELD_CLASS}
+                                />
+                              </div>
+                              <div className="grid gap-1.5">
+                                <Label htmlFor="eoi-interest" className={LABEL_CLASS}>
+                                  {t(lang, "eoiInterestLabel")} <span className="text-red-500">*</span>
+                                </Label>
+                                <Input
+                                  id="eoi-interest"
+                                  value={eoiForm.interest}
+                                  onChange={handleEoiInputChange("interest")}
+                                  placeholder={t(lang, "eoiInterestPlaceholder")}
+                                  className={FIELD_CLASS}
+                                />
+                              </div>
+                              <div className="grid gap-1.5">
+                                <Label htmlFor="eoi-details" className={LABEL_CLASS}>
+                                  {t(lang, "eoiDetailsLabel")}
+                                </Label>
+                                <textarea
+                                  id="eoi-details"
+                                  value={eoiForm.details}
+                                  onChange={handleEoiInputChange("details")}
+                                  className={`${FIELD_CLASS} min-h-[110px] resize-y`}
+                                />
+                              </div>
+                              <div className="flex justify-end">
+                                <Button type="submit" disabled={isSubmittingEoi}>
+                                  {isSubmittingEoi ? t(lang, "eoiSubmitting") : t(lang, "eoiSubmitButton")}
+                                </Button>
+                              </div>
+                            </form>
+                          )}
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </aside>
                 </div>
