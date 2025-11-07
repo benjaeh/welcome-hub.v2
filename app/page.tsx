@@ -900,7 +900,7 @@ export default function App() {
             className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,#7cc5e6_0%,#41c39c_55%,#29a084_100%)]"
             aria-hidden="true"
           />
-          <div className="max-w-6xl mx-auto px-4 pt-4 sm:pt-6 pb-16">
+          <div className="max-w-6xl mx-auto px-4 pt-3 sm:pt-5 pb-16">
             <div
               ref={cardsRef}
               className="relative z-10"
@@ -910,9 +910,9 @@ export default function App() {
                 transition: "transform 0.4s ease, opacity 0.4s ease",
               }}
             >
-              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-5 md:p-8 space-y-5 backdrop-blur">
-                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
-                  <div className="space-y-5">
+              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-4 md:p-6 space-y-4 backdrop-blur">
+                <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
+                  <div className="space-y-4">
                     <h1 className="font-display text-[2.6rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-snug text-slate-900">
                       {t(lang, "welcome")}
                     </h1>
