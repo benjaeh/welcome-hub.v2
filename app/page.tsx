@@ -904,10 +904,10 @@ export default function App() {
                 transition: "transform 0.4s ease, opacity 0.4s ease",
               }}
             >
-              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-8 md:p-12 space-y-8 backdrop-blur">
-                <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
-                  <div className="space-y-8">
-                    <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-slate-900">
+              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-6 md:p-10 space-y-6 backdrop-blur">
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
+                  <div className="space-y-6">
+                    <h1 className="font-display text-3xl sm:text-[2.6rem] lg:text-[2.9rem] font-bold leading-snug text-slate-900">
                       {t(lang, "welcome")}
                     </h1>
                     <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
@@ -918,7 +918,7 @@ export default function App() {
                         {t(lang, "formSuccessBanner")}
                       </div>
                     ) : null}
-                    <div className="flex flex-wrap gap-4 pt-2">
+                    <div className="flex flex-wrap gap-3 pt-1">
                       <Dialog
                         open={isCheckinOpen}
                         onOpenChange={(open) => {
