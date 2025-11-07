@@ -1350,27 +1350,6 @@ export default function App() {
                           </a>
                         );
                       })}
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <button className="w-full rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-left text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md">
-                            <span className="flex items-center gap-2">
-                              <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
-                                <Mailbox className="w-4 h-4" />
-                              </span>
-                              {t(lang, "newsletterTitle")}
-                            </span>
-                          </button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[440px]">
-                          <DialogHeader>
-                            <DialogTitle>{t(lang, "newsletterModalTitle")}</DialogTitle>
-                            <DialogDescription>{t(lang, "newsletterModalDesc")}</DialogDescription>
-                          </DialogHeader>
-                          <div className="flex justify-center py-4">
-                            <QRCodeSVG value="https://communiteer.org/newsletter" size={256} includeMargin />
-                          </div>
-                        </DialogContent>
-                      </Dialog>
                     </div>
                   </aside>
                 </div>
