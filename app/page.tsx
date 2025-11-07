@@ -62,6 +62,12 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, 
   return <button className="w-full text-left h-full" onClick={onClick}>{body}</button>;
 };
 
+const HERO_INFO_CARDS = [
+  { id: "guide", titleKey: "guideTitle", icon: BookOpen, href: "https://example.org/welcome-guide" },
+  { id: "sns", titleKey: "snsTitle", icon: Info, href: "https://www.study.nsw.gov.au/" },
+  { id: "comm", titleKey: "commTitle", icon: HeartHandshake, href: "https://communiteer.org/" },
+] as const;
+
 // Temporary demo announcements
 const UPCOMING_ACTIVITIES = [
   {
@@ -1315,13 +1321,56 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-                  <aside>
+                  <aside className="space-y-3">
                     <div className="rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur px-3 py-3 md:px-4 md:py-4 space-y-2">
                       <div className="flex items-center gap-2 text-sm md:text-base text-slate-700">
                         <CalendarDays className="w-4 h-4 md:w-5 md:h-5" />
                         <span className="font-semibold">{t(lang, "localTime")}</span>
                       </div>
                       <div className="text-lg md:text-xl font-bold text-slate-900 leading-tight">{dateStr}</div>
+                    </div>
+                    <div className="space-y-2">
+                      {HERO_INFO_CARDS.map((card) => {
+                        const Icon = card.icon;
+                        return (
+                          <a
+                            key={card.id}
+                            href={card.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md"
+                          >
+                            <span className="flex items-center gap-2">
+                              <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
+                                <Icon className="w-4 h-4" />
+                              </span>
+                              {t(lang, card.titleKey)}
+                            </span>
+                            <ChevronRight className="w-4 h-4 text-slate-400" />
+                          </a>
+                        );
+                      })}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <button className="w-full rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-left text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md">
+                            <span className="flex items-center gap-2">
+                              <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
+                                <Mailbox className="w-4 h-4" />
+                              </span>
+                              {t(lang, "newsletterTitle")}
+                            </span>
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[440px]">
+                          <DialogHeader>
+                            <DialogTitle>{t(lang, "newsletterModalTitle")}</DialogTitle>
+                            <DialogDescription>{t(lang, "newsletterModalDesc")}</DialogDescription>
+                          </DialogHeader>
+                          <div className="flex justify-center py-4">
+                            <QRCodeSVG value="https://communiteer.org/newsletter" size={256} includeMargin />
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </aside>
                 </div>
@@ -1360,104 +1409,6 @@ export default function App() {
             </div>
           </div>
         </section>
-
-        <div className="max-w-6xl mx-auto px-4 pt-10 pb-12 space-y-10">
-          <div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <Input
-                id="searchBox"
-                placeholder={t(lang, "searchPlaceholder")}
-                className="rounded-2xl py-6 text-base text-white placeholder:text-white"
-              />
-              <Button className="rounded-2xl px-6 h-12 text-base">
-                <Search className="w-5 h-5 mr-2" />
-                {t(lang, "btnSearch")}
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            <SectionCard
-              title={t(lang, "checkinTitle")}
-              icon={ClipboardList}
-              onClick={() => window.open("https://example.org/check-in", "_blank")}
-            >
-              {t(lang, "checkinDesc")}
-            </SectionCard>
-
-            <SectionCard title={t(lang, "guideTitle")} icon={BookOpen} href="https://example.org/welcome-guide">
-              {t(lang, "guideDesc")}
-            </SectionCard>
-
-            <SectionCard title={t(lang, "snsTitle")} icon={Info} href="https://www.study.nsw.gov.au/">
-              {t(lang, "snsDesc")}
-            </SectionCard>
-
-            <SectionCard title={t(lang, "commTitle")} icon={HeartHandshake} href="https://communiteer.org/">
-              {t(lang, "commDesc")}
-            </SectionCard>
-
-            <SectionCard
-              title={t(lang, "helpTitle")}
-              icon={LifeBuoy}
-              onClick={() => window.open("mailto:support@example.org", "_blank")}
-            >
-              {t(lang, "helpDesc")}
-            </SectionCard>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <button className="w-full text-left h-full">
-                  <Card className="hover:shadow-xl transition-shadow cursor-pointer rounded-2xl h-full">
-                    <CardContent className="p-5 flex gap-4 items-start">
-                      <div className="p-3 rounded-2xl bg-muted shrink-0">
-                        <Mailbox className="w-7 h-7" />
-                      </div>
-                      <div className="space-y-1">
-                        <h3 className="text-lg font-semibold leading-tight">{t(lang, "newsletterTitle")}</h3>
-                        <div className="text-sm text-muted-foreground">{t(lang, "newsletterDesc")}</div>
-                      </div>
-                      <ChevronRight className="w-5 h-5 ml-auto mt-1 text-muted-foreground" />
-                    </CardContent>
-                  </Card>
-                </button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[440px]">
-                <DialogHeader>
-                  <DialogTitle>{t(lang, "newsletterModalTitle")}</DialogTitle>
-                  <DialogDescription>{t(lang, "newsletterModalDesc")}</DialogDescription>
-                </DialogHeader>
-                <div className="flex justify-center py-4">
-                  <QRCodeSVG value="https://communiteer.org/newsletter" size={256} includeMargin />
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="rounded-2xl lg:col-span-1">
-              <CardContent className="p-6 space-y-4">
-                <div className="flex items-center gap-2">
-                  <LifeBuoy className="w-5 h-5" />
-                  <h3 className="font-semibold">{t(lang, "needHelp")}</h3>
-                </div>
-                <div className="space-y-3">
-                  <Button className="w-full rounded-xl" onClick={() => window.open("tel:1300367899", "_self")}>
-                    <PhoneCall className="w-5 h-5 mr-2" />
-                    {t(lang, "callSns")}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full rounded-xl"
-                    onClick={() => window.open("mailto:support@example.org", "_blank")}
-                  >
-                    {t(lang, "emailTeam")}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
 
         <footer className="px-0 py-8 text-sm text-muted-foreground">
           <Separator className="mb-4" />
