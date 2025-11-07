@@ -910,10 +910,10 @@ export default function App() {
                 transition: "transform 0.4s ease, opacity 0.4s ease",
               }}
             >
-              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-6 md:p-10 space-y-6 backdrop-blur">
-                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
-                  <div className="space-y-6">
-                    <h1 className="font-display text-3xl sm:text-[2.6rem] lg:text-[2.9rem] font-bold leading-snug text-slate-900">
+              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-5 md:p-8 space-y-5 backdrop-blur">
+                <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
+                  <div className="space-y-5">
+                    <h1 className="font-display text-[2.6rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-snug text-slate-900">
                       {t(lang, "welcome")}
                     </h1>
                     <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
