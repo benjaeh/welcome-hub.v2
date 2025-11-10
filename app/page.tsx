@@ -986,13 +986,12 @@ export default function App() {
                 className="rounded-3xl shadow-xl ring-1 ring-slate-100 p-4 md:p-6 space-y-4 backdrop-blur overflow-hidden"
                 style={{
                   backgroundImage: `
-                    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 300' preserveAspectRatio='none'><path d='M0,250 C 260,190 520,140 780,180 C 1010,210 1250,240 1440,210 L1440,300 L0,300 Z' fill='%23f58b1a'/></svg>"),
-                    linear-gradient(#f58b1a,#f58b1a),
+                    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 300' preserveAspectRatio='none'><defs><linearGradient id='panelWaveGradient' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23ffd08a'/><stop offset='100%' stop-color='%23f58b1a'/></linearGradient></defs><path d='M0,250 C 260,190 520,140 780,180 C 1010,210 1250,240 1440,210 L1440,300 L0,300 Z' fill='url(%23panelWaveGradient)'/></svg>"),
                     radial-gradient(circle at top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 60%, rgba(255,255,255,0.82) 100%)
                   `,
-                  backgroundRepeat: "no-repeat, no-repeat, no-repeat",
-                  backgroundPosition: "bottom center, bottom center, center top",
-                  backgroundSize: "100% 500px, 100% 290px, cover",
+                  backgroundRepeat: "no-repeat, no-repeat",
+                  backgroundPosition: "bottom center, center top",
+                  backgroundSize: "100% 800px, cover",
                 }}
               >
                 <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
@@ -1584,12 +1583,12 @@ export default function App() {
         <style>{`
           @media (min-width: 768px) {
             [data-panel="hero-card"] {
-              background-size: 100% 600px, 100% 330px, cover;
+              background-size: 100% 600px, cover;
             }
           }
           @media (min-width: 1024px) {
             [data-panel="hero-card"] {
-              background-size: 100% 680px, 100% 360px, cover;
+              background-size: 100% 680px, cover;
             }
           }
         `}</style>
