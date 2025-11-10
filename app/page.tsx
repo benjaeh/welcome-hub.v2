@@ -980,7 +980,21 @@ export default function App() {
                 transition: "transform 0.4s ease, opacity 0.4s ease",
               }}
             >
-              <div className="rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.95)_0%,_rgba(255,255,255,0.88)_60%,_rgba(255,255,255,0.82)_100%)] shadow-xl ring-1 ring-slate-100 p-4 md:p-6 space-y-4 backdrop-blur">
+              <div
+                data-panel="hero-card"
+                aria-labelledby="whats-on-heading"
+                className="rounded-3xl shadow-xl ring-1 ring-slate-100 p-4 md:p-6 space-y-4 backdrop-blur overflow-hidden"
+                style={{
+                  backgroundImage: `
+                    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 300' preserveAspectRatio='none'><path d='M0,250 C 260,190 520,140 780,180 C 1010,210 1250,240 1440,210 L1440,300 L0,300 Z' fill='%23f58b1a'/></svg>"),
+                    linear-gradient(#f58b1a,#f58b1a),
+                    radial-gradient(circle at top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 60%, rgba(255,255,255,0.82) 100%)
+                  `,
+                  backgroundRepeat: "no-repeat, no-repeat, no-repeat",
+                  backgroundPosition: "bottom center, bottom center, center top",
+                  backgroundSize: "100% 500px, 100% 290px, cover",
+                }}
+              >
                 <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
                   <div className="space-y-4">
                     <h1 className="font-display text-[2.6rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-snug text-slate-900">
@@ -1027,8 +1041,7 @@ export default function App() {
                         </DialogTrigger>
                         <DialogContent className="max-h-[70vh] overflow-hidden border border-white/60 bg-white/90 shadow-2xl backdrop-blur sm:max-w-[520px]">
                           <DialogHeader className="space-y-2">
-                            <DialogTitle>{t(lang, "heroCheckinButton")}</DialogTitle>
-                            <DialogDescription>{t(lang, "heroCheckinDescription")}</DialogDescription>
+                            <DialogTitle>{t(lang, "heroCheckinModalTitle")}</DialogTitle>
                           </DialogHeader>
                           {checkinError ? (
                             <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -1385,7 +1398,7 @@ export default function App() {
                         type="button"
                         aria-label={t(lang, "heroExploreAria")}
                         className="inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3 font-medium text-white transition hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-500"
-                        onClick={() => window.open("https://www.study.nsw.gov.au/", "_blank")}
+                        onClick={() => window.open("https://communiteer.org/student-engagement", "_blank")}
                       >
                         {t(lang, "heroExploreButton")}
                       </button>
@@ -1394,8 +1407,8 @@ export default function App() {
                   <aside className="space-y-3">
                     <div className="rounded-3xl border border-slate-200 bg-white shadow-sm backdrop-blur px-3 py-3 md:px-4 md:py-4 space-y-2">
                       <div className="flex items-center gap-2 text-sm md:text-base text-slate-700">
-                        <CalendarDays className="w-4 h-4 md:w-5 md:h-5" />
-                        <span className="font-semibold">{t(lang, "localTime")}</span>
+                        <CalendarDays className="w-4 h-4 md:w-5 md:h-5 text-teal-600" />
+                        <span className="font-semibold text-teal-700">{t(lang, "localTime")}</span>
                       </div>
                       <div className="text-lg md:text-xl font-bold text-slate-900 leading-tight">{dateStr}</div>
                     </div>
@@ -1533,7 +1546,9 @@ export default function App() {
                 <div className="space-y-6">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div className="space-y-1.5">
-                      <h2 className="text-2xl font-semibold text-slate-900">{t(lang, "whatsOnHeading")}</h2>
+                        <h2 id="whats-on-heading" className="text-2xl font-semibold text-slate-900">
+                          {t(lang, "whatsOnHeading")}
+                        </h2>
                       <p className="text-sm text-muted-foreground">{t(lang, "whatsOnSubheading")}</p>
                     </div>
                     <a
@@ -1565,6 +1580,19 @@ export default function App() {
             </div>
           </div>
         </section>
+
+        <style>{`
+          @media (min-width: 768px) {
+            [data-panel="hero-card"] {
+              background-size: 100% 600px, 100% 330px, cover;
+            }
+          }
+          @media (min-width: 1024px) {
+            [data-panel="hero-card"] {
+              background-size: 100% 680px, 100% 360px, cover;
+            }
+          }
+        `}</style>
 
         <footer className="px-0 py-8 text-sm text-muted-foreground">
           <Separator className="mb-4" />
