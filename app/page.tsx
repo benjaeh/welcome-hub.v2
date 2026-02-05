@@ -9,22 +9,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
-  BookOpen,
   HeartHandshake,
   Megaphone,
   ClipboardList,
-  Info,
   ChevronRight,
   ChevronDown,
   CalendarDays,
-  HelpCircle,
   Globe,
 } from "lucide-react";
   import { ArrowLeft } from "lucide-react";
   import { useInactivityTimer } from "@/hooks/useInactivityTimer";
 import Image from "next/image";
 import { LANGS, RTL_LANGS, LOCALE_MAP, t, type Lang } from "./i18n";
-import { NavigationDropdown, type DropdownLink } from "@/components/NavigationDropdown";
+import { NavigationDropdown } from "@/components/NavigationDropdown";
 
 
 /** ---- Helpers ---- */
@@ -62,7 +59,17 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, 
   return <button className="w-full text-left h-full" onClick={onClick}>{body}</button>;
 };
 
-const HERO_INFO_CARDS = [
+type HeroCard = {
+  id: string;
+  titleKey: string;
+  descKey: string;
+  icon: React.ComponentType<{ className?: string }>;
+  embedUrl?: string;
+  externalUrl?: string;
+  internalView?: boolean;
+};
+
+const HERO_INFO_CARDS: HeroCard[] = [
   {
     id: "comm",
     titleKey: "commTitle",
@@ -77,7 +84,7 @@ const HERO_INFO_CARDS = [
     icon: Globe,
     externalUrl: "https://www.study.nsw.gov.au/",
   },
-] as const;
+];
 
 type EoiFormState = {
   firstName: string;
@@ -1481,7 +1488,7 @@ export default function App() {
                     </div>
                     <div className="space-y-2">
                       {HERO_INFO_CARDS.map((card) => {
-                        const isInternal = (card as any).internalView;
+                        const isInternal = !!card.internalView;
                         if (isInternal) {
                           return (
                             <SectionCard
@@ -1500,8 +1507,8 @@ export default function App() {
                             title={t(lang, card.titleKey)}
                             description={t(lang, card.descKey)}
                             icon={card.icon}
-                            embedUrl={(card as any).embedUrl}
-                            externalUrl={(card as any).externalUrl}
+                            embedUrl={card.embedUrl}
+                            externalUrl={card.externalUrl}
                           />
                         );
                       })}

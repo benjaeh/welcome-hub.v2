@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, ChevronDown, X } from "lucide-react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 
 export type DropdownLink = {
   label: string;
