@@ -34,30 +34,6 @@ function useLocalTime(): Date | null {
   }, []);
   return now;
 }
-type SectionCardProps = {
-  title: string;
-  icon: React.ComponentType<{ className?: string }>;
-  children?: React.ReactNode;
-  onClick?: () => void;
-  href?: string;
-};
-const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, onClick, href }) => {
-  const body = (
-    <Card className="hover:shadow-xl transition-shadow cursor-pointer rounded-2xl h-full">
-      <CardContent className="p-5 flex gap-4 items-start">
-        <div className="p-3 rounded-2xl bg-muted shrink-0"><Icon className="w-7 h-7" /></div>
-        <div className="space-y-1">
-          <h3 className="text-lg font-semibold leading-tight">{title}</h3>
-          <div className="text-sm text-muted-foreground">{children}</div>
-        </div>
-        <ChevronRight className="w-5 h-5 ml-auto mt-1 text-muted-foreground" />
-      </CardContent>
-    </Card>
-  );
-  if (href) return <a href={href} target="_blank" rel="noreferrer" className="block h-full">{body}</a>;
-  return <button className="w-full text-left h-full" onClick={onClick}>{body}</button>;
-};
-
 type HeroInfoCard = {
   id: string;
   titleKey: string;
@@ -618,7 +594,7 @@ export default function App() {
   const [lang, setLang] = React.useState<Lang>("en");
   const [isWelcomeVisible, setIsWelcomeVisible] = React.useState(true);
   const [welcomeLangIndex, setWelcomeLangIndex] = React.useState(0);
-  const welcomeInactivityTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const welcomeInactivityTimer = React.useRef<number | null>(null);
   const WELCOME_ROTATION_MS = 2500;
   const WELCOME_INACTIVITY_MS = 15000;
 
