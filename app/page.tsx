@@ -679,6 +679,7 @@ export default function App() {
   const [isSubmittingEoi, setIsSubmittingEoi] = React.useState(false);
   const [eoiError, setEoiError] = React.useState<string | null>(null);
   const [eoiSuccess, setEoiSuccess] = React.useState(false);
+  const [activeEmbed, setActiveEmbed] = React.useState<{ title: string; url: string } | null>(null);
 
   React.useEffect(() => {
     const target = cardsRef.current;
@@ -713,6 +714,14 @@ export default function App() {
 
   const handleWelcomeDismiss = React.useCallback(() => {
     setIsWelcomeVisible(false);
+  }, []);
+
+  const handleEmbedOpen = React.useCallback((payload: { title: string; url: string }) => {
+    setActiveEmbed(payload);
+  }, []);
+
+  const handleEmbedClose = React.useCallback(() => {
+    setActiveEmbed(null);
   }, []);
 
   const cardsTransform = cardsVisible ? "translateY(0)" : "translateY(40px)";
@@ -1052,7 +1061,7 @@ export default function App() {
               <div
                 data-panel="hero-card"
                 aria-labelledby="whats-on-heading"
-                className="rounded-3xl shadow-xl ring-1 ring-slate-100 p-4 md:p-6 space-y-4 backdrop-blur overflow-hidden"
+                className="relative rounded-3xl shadow-xl ring-1 ring-slate-100 p-4 md:p-6 space-y-4 backdrop-blur overflow-hidden"
                 style={{
                   backgroundImage: `
                     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 300' preserveAspectRatio='none'><defs><linearGradient id='panelWaveGradient' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23ffd08a'/><stop offset='100%' stop-color='%23f58b1a'/></linearGradient></defs><path d='M0,250 C 260,190 520,140 780,180 C 1010,210 1250,240 1440,210 L1440,300 L0,300 Z' fill='url(%23panelWaveGradient)'/></svg>"),
@@ -1063,6 +1072,40 @@ export default function App() {
                   backgroundSize: "100% 800px, cover",
                 }}
               >
+                {activeEmbed ? (
+                  <div className="absolute inset-0 z-20 flex flex-col rounded-3xl bg-white p-4 md:p-6">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <h2 className="text-lg font-semibold text-slate-900">{activeEmbed.title}</h2>
+                      <button
+                        type="button"
+                        onClick={handleEmbedClose}
+                        className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+                      >
+                        <span aria-hidden="true">×</span>
+                        {t(lang, "embedCloseButton")}
+                      </button>
+                    </div>
+                    <div className="flex-1 min-h-0 overflow-hidden rounded-2xl border border-slate-200">
+                      <iframe title={activeEmbed.title} src={activeEmbed.url} className="h-full w-full" loading="eager" />
+                    </div>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                      <div className="space-y-0.5">
+                        <p className="font-semibold">{t(lang, "embedFallbackTitle")}</p>
+                        <p className="text-xs text-slate-600">{t(lang, "embedFallbackBody")}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          window.open(activeEmbed.url, "_blank", "noopener,noreferrer");
+                          handleEmbedClose();
+                        }}
+                        className="rounded-full bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400"
+                      >
+                        {t(lang, "embedFallbackAction")}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
                 <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(320px,360px)] items-start">
                   <div className="space-y-4">
                     <h1 className="font-display text-[2.6rem] sm:text-[2.4rem] lg:text-[2.8rem] font-bold leading-snug text-slate-900">
@@ -1495,6 +1538,7 @@ export default function App() {
                               className={cardClassName}
                               embedUrl={card.embedUrl}
                               externalUrl={card.externalUrl}
+                              onEmbedOpen={card.embedUrl ? handleEmbedOpen : undefined}
                               returnAfterMs={card.returnAfterMs}
                               returnTo="/"
                               closeLabel={t(lang, "embedCloseButton")}

@@ -9,6 +9,7 @@ type NavigationModalLinkProps = {
   className?: string;
   embedUrl?: string;
   externalUrl?: string;
+  onEmbedOpen?: (payload: { title: string; url: string }) => void;
   returnAfterMs?: number;
   returnTo?: string;
   closeLabel?: string;
@@ -23,6 +24,7 @@ export default function NavigationModalLink({
   className,
   embedUrl,
   externalUrl,
+  onEmbedOpen,
   returnAfterMs,
   returnTo = "/",
   closeLabel = "Close",
@@ -48,6 +50,10 @@ export default function NavigationModalLink({
 
   const handleCardClick = () => {
     if (embedUrl) {
+      if (onEmbedOpen) {
+        onEmbedOpen({ title, url: embedUrl });
+        return;
+      }
       setIsOpen(true);
       return;
     }
