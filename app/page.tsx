@@ -616,6 +616,11 @@ function createEmptyCheckinForm(): CheckinFormState {
 /** ---- Component ---- */
 export default function App() {
   const [lang, setLang] = React.useState<Lang>("en");
+  const [isWelcomeVisible, setIsWelcomeVisible] = React.useState(true);
+  const [welcomeLangIndex, setWelcomeLangIndex] = React.useState(0);
+  const welcomeInactivityTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const WELCOME_ROTATION_MS = 2500;
+  const WELCOME_INACTIVITY_MS = 15000;
 
   React.useEffect(() => {
     const saved = localStorage.getItem("hub.lang");
@@ -630,6 +635,50 @@ export default function App() {
     document.documentElement.dir = RTL_LANGS.includes(lang) ? "rtl" : "ltr";
   }, [lang]);
 
+  React.useEffect(() => {
+    if (!isWelcomeVisible) return;
+    setWelcomeLangIndex(0);
+    const interval = window.setInterval(() => {
+      setWelcomeLangIndex((prev) => (prev + 1) % LANGS.length);
+    }, WELCOME_ROTATION_MS);
+    return () => window.clearInterval(interval);
+  }, [isWelcomeVisible, WELCOME_ROTATION_MS]);
+
+  React.useEffect(() => {
+    if (isWelcomeVisible) return;
+
+    const resetTimer = () => {
+      if (welcomeInactivityTimer.current) {
+        window.clearTimeout(welcomeInactivityTimer.current);
+      }
+      welcomeInactivityTimer.current = window.setTimeout(() => {
+        setIsWelcomeVisible(true);
+      }, WELCOME_INACTIVITY_MS);
+    };
+
+    resetTimer();
+    const events: Array<keyof WindowEventMap> = ["mousedown", "mousemove", "touchstart", "keydown", "scroll"];
+    events.forEach((eventName) => window.addEventListener(eventName, resetTimer));
+
+    return () => {
+      if (welcomeInactivityTimer.current) {
+        window.clearTimeout(welcomeInactivityTimer.current);
+        welcomeInactivityTimer.current = null;
+      }
+      events.forEach((eventName) => window.removeEventListener(eventName, resetTimer));
+    };
+  }, [isWelcomeVisible, WELCOME_INACTIVITY_MS]);
+
+  React.useEffect(() => {
+    if (!isWelcomeVisible) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isWelcomeVisible]);
+
+  const welcomeLang = LANGS[welcomeLangIndex]?.code ?? "en";
   const now = useLocalTime();
   const dateLocale = LOCALE_MAP[lang] ?? LOCALE_MAP.en;
   const dateStr = now
@@ -684,6 +733,10 @@ export default function App() {
         checkinCloseTimer.current = null;
       }
     };
+  }, []);
+
+  const handleWelcomeDismiss = React.useCallback(() => {
+    setIsWelcomeVisible(false);
   }, []);
 
   const cardsTransform = cardsVisible ? "translateY(0)" : "translateY(40px)";
@@ -930,6 +983,29 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <div
+        className={`fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/80 backdrop-blur-md transition-opacity duration-500 ${
+          isWelcomeVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        aria-hidden={!isWelcomeVisible}
+        role="button"
+        tabIndex={isWelcomeVisible ? 0 : -1}
+        onClick={handleWelcomeDismiss}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            handleWelcomeDismiss();
+          }
+        }}
+      >
+        <div className="mx-6 max-w-3xl text-center">
+          <div className="rounded-3xl border border-white/20 bg-white/10 px-8 py-10 shadow-2xl">
+            <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white leading-tight">
+              {t(welcomeLang, "welcomeScreenMessage")}
+            </p>
+          </div>
+        </div>
+      </div>
       <header className="w-full bg-white shadow-sm">
         <div className="w-full flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:px-12">
           <div className="flex flex-wrap items-center gap-4 sm:gap-5">
