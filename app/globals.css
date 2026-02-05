@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "tw-animate-css";
+/* Removed import of tw-animate-css because it's not available on the deploy environment. */
 
 @custom-variant dark (&:is(.dark *));
 
