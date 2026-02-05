@@ -94,7 +94,7 @@ export default function NavigationModalLink({
 
       {isOpen && embedUrl ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" aria-hidden="true" />
+          <div className="absolute inset-0 bg-transparent" aria-hidden="true" />
           <div
             role="dialog"
             aria-modal="true"
