@@ -34,7 +34,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "latest",
-    "animate-css": "^1.4.0",
+    "animate.css": "^4.1.1",
     "typescript": "^5"
   }
 }
