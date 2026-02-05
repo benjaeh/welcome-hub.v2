@@ -974,12 +974,13 @@ export default function App() {
           }
         }}
       >
-        <div className="mx-6 max-w-3xl text-center">
-          <div className="rounded-3xl border border-white/20 bg-white/10 px-8 py-10 shadow-2xl">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white leading-tight">
-              {t(welcomeLang, "welcomeScreenMessage")}
-            </p>
-          </div>
+        <div className="mx-6 max-w-4xl text-center">
+          <p
+            key={welcomeLangIndex}
+            className="welcome-display welcome-fade text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight"
+          >
+            {t(welcomeLang, "welcomeScreenMessage")}
+          </p>
         </div>
       </div>
       <header className="w-full bg-white shadow-sm">

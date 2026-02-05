@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -117,5 +118,29 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.welcome-display {
+  font-family: "Fraunces", "Times New Roman", serif;
+  letter-spacing: -0.02em;
+}
+
+.welcome-fade {
+  animation: welcomeFade 2.5s ease-in-out;
+}
+
+@keyframes welcomeFade {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
