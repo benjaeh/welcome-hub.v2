@@ -99,7 +99,7 @@ export default function NavigationModalLink({
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="relative z-10 flex h-[min(82vh,720px)] w-[min(92vw,72rem)] flex-col rounded-3xl bg-white p-4 shadow-2xl"
+            className="relative z-10 flex h-[min(82vh,720px)] w-full max-w-6xl flex-col rounded-3xl bg-white p-4 md:p-6 shadow-2xl"
           >
             <div className="mb-3 flex items-center justify-between gap-3">
               <h2 id={titleId} className="text-lg font-semibold text-slate-900">
