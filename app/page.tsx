@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import NavigationModalLink from "@/components/NavigationModalLink";
 import {
   BookOpen,
   HeartHandshake,
@@ -57,11 +58,21 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, 
   return <button className="w-full text-left h-full" onClick={onClick}>{body}</button>;
 };
 
-const HERO_INFO_CARDS = [
+type HeroInfoCard = {
+  id: string;
+  titleKey: string;
+  icon: React.ComponentType<{ className?: string }>;
+  href?: string;
+  embedUrl?: string;
+  externalUrl?: string;
+  returnAfterMs?: number;
+};
+
+const HERO_INFO_CARDS: HeroInfoCard[] = [
   { id: "guide", titleKey: "guideTitle", icon: BookOpen, href: "https://example.org/welcome-guide" },
-  { id: "comm", titleKey: "commTitle", icon: HeartHandshake, href: "https://communiteer.org/" },
-  { id: "sns", titleKey: "snsTitle", icon: Info, href: "https://www.study.nsw.gov.au/" },
-] as const;
+  { id: "comm", titleKey: "commTitle", icon: HeartHandshake, embedUrl: "https://communiteer.org/" },
+  { id: "sns", titleKey: "snsTitle", icon: Info, externalUrl: "https://www.study.nsw.gov.au/", returnAfterMs: 10000 },
+];
 
 type EoiFormState = {
   firstName: string;
@@ -1414,13 +1425,35 @@ export default function App() {
                     <div className="space-y-2">
                       {HERO_INFO_CARDS.map((card) => {
                         const Icon = card.icon;
+                        const cardClassName =
+                          "flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md";
+
+                        if (card.embedUrl || card.externalUrl) {
+                          return (
+                            <NavigationModalLink
+                              key={card.id}
+                              title={t(lang, card.titleKey)}
+                              icon={Icon}
+                              className={cardClassName}
+                              embedUrl={card.embedUrl}
+                              externalUrl={card.externalUrl}
+                              returnAfterMs={card.returnAfterMs}
+                              returnTo="/"
+                              closeLabel={t(lang, "embedCloseButton")}
+                              fallbackTitle={t(lang, "embedFallbackTitle")}
+                              fallbackBody={t(lang, "embedFallbackBody")}
+                              fallbackActionLabel={t(lang, "embedFallbackAction")}
+                            />
+                          );
+                        }
+
                         return (
                           <a
                             key={card.id}
                             href={card.href}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md"
+                            className={cardClassName}
                           >
                             <span className="flex items-center gap-2">
                               <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
