@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import NavigationModalLink from "@/components/NavigationModalLink";
 import {
-  BookOpen,
+  Car,
   HeartHandshake,
   Megaphone,
   ClipboardList,
@@ -69,7 +69,7 @@ type HeroInfoCard = {
 };
 
 const HERO_INFO_CARDS: HeroInfoCard[] = [
-  { id: "guide", titleKey: "guideTitle", icon: BookOpen, href: "https://example.org/welcome-guide" },
+  { id: "transport", titleKey: "transportTitle", icon: Car, embedUrl: "https://2airport.com.au/" },
   { id: "comm", titleKey: "commTitle", icon: HeartHandshake, embedUrl: "https://communiteer.org/" },
   { id: "sns", titleKey: "snsTitle", icon: Info, externalUrl: "https://www.study.nsw.gov.au/", returnAfterMs: 10000 },
 ];
