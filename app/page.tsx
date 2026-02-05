@@ -58,10 +58,7 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, 
 };
 
 const HERO_INFO_CARDS = [
-<<<<<<< HEAD
   { id: "guide", titleKey: "guideTitle", icon: BookOpen, href: "https://example.org/welcome-guide" },
-=======
->>>>>>> 6d6f512 (lastest version)
   { id: "comm", titleKey: "commTitle", icon: HeartHandshake, href: "https://communiteer.org/" },
   { id: "sns", titleKey: "snsTitle", icon: Info, href: "https://www.study.nsw.gov.au/" },
 ] as const;
