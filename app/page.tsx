@@ -17,9 +17,14 @@ import {
   ChevronRight,
   ChevronDown,
   CalendarDays,
+  HelpCircle,
+  Globe,
 } from "lucide-react";
+  import { ArrowLeft } from "lucide-react";
+  import { useInactivityTimer } from "@/hooks/useInactivityTimer";
 import Image from "next/image";
 import { LANGS, RTL_LANGS, LOCALE_MAP, t, type Lang } from "./i18n";
+import { NavigationDropdown, type DropdownLink } from "@/components/NavigationDropdown";
 
 
 /** ---- Helpers ---- */
@@ -58,8 +63,20 @@ const SectionCard: React.FC<SectionCardProps> = ({ title, icon: Icon, children, 
 };
 
 const HERO_INFO_CARDS = [
-  { id: "comm", titleKey: "commTitle", icon: HeartHandshake, href: "https://communiteer.org/" },
-  { id: "sns", titleKey: "snsTitle", icon: Info, href: "https://www.study.nsw.gov.au/" },
+  {
+    id: "comm",
+    titleKey: "commTitle",
+    descKey: "commDesc",
+    icon: HeartHandshake,
+    embedUrl: "https://communiteer.org/",
+  },
+  {
+    id: "sns",
+    titleKey: "snsTitle",
+    descKey: "snsDesc",
+    icon: Globe,
+    externalUrl: "https://www.study.nsw.gov.au/",
+  },
 ] as const;
 
 type EoiFormState = {
@@ -69,7 +86,6 @@ type EoiFormState = {
   interest: string;
   details: string;
 };
-
 const EOI_FORM_DEFAULT: EoiFormState = {
   firstName: "",
   lastName: "",
@@ -631,6 +647,18 @@ export default function App() {
   const [checkinError, setCheckinError] = React.useState<string | null>(null);
   const [checkinSuccess, setCheckinSuccess] = React.useState(false);
   const [showCheckinBanner, setShowCheckinBanner] = React.useState(false);
+    const [viewingStudyNSW, setViewingStudyNSW] = React.useState(false);
+
+    // Inactivity timer for Study NSW - auto-returns to welcome after 20 seconds
+    useInactivityTimer(
+      () => {
+        if (viewingStudyNSW) {
+          setViewingStudyNSW(false);
+        }
+      },
+      20000, // 20 seconds
+      viewingStudyNSW // only enabled when viewing Study NSW
+    );
   const [countrySearch, setCountrySearch] = React.useState("");
   const [countrySearchVisible, setCountrySearchVisible] = React.useState(false);
   const [phoneCodeSearch, setPhoneCodeSearch] = React.useState("");
@@ -918,6 +946,47 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+        {viewingStudyNSW ? (
+          // Study NSW Integrated View
+          <div className="flex flex-col min-h-screen bg-white">
+            <header className="w-full bg-white border-b border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between px-6 py-4 lg:px-12">
+                <button
+                  onClick={() => setViewingStudyNSW(false)}
+                  className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50 hover:border-slate-300"
+                  aria-label={t(lang, "btnBackToWelcome")}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  {t(lang, "btnBackToWelcome")}
+                </button>
+                <div className="relative">
+                  <select
+                    value={lang}
+                    onChange={(e) => setLang(e.target.value as Lang)}
+                    className="appearance-none rounded-full border border-white/60 bg-white/90 px-5 pr-12 py-2.5 text-base font-medium text-slate-800 shadow-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent hover:border-emerald-200"
+                    aria-label={t(lang, "languageSelectorAria")}
+                  >
+                    {LANGS.map((l) => (
+                      <option key={l.code} value={l.code}>
+                        {l.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-500" />
+                </div>
+              </div>
+            </header>
+            <div className="flex-1 w-full overflow-hidden">
+              <iframe
+                src="https://www.study.nsw.gov.au/"
+                title="Study NSW"
+                className="w-full h-full border-0"
+              />
+            </div>
+          </div>
+        ) : (
+          // Welcome Hub Main View
+          <>
       <header className="w-full bg-white shadow-sm">
         <div className="w-full flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:px-12">
           <div className="flex flex-wrap items-center gap-4 sm:gap-5">
@@ -1412,23 +1481,28 @@ export default function App() {
                     </div>
                     <div className="space-y-2">
                       {HERO_INFO_CARDS.map((card) => {
-                        const Icon = card.icon;
+                        const isInternal = (card as any).internalView;
+                        if (isInternal) {
+                          return (
+                            <SectionCard
+                              key={card.id}
+                              title={t(lang, card.titleKey)}
+                              icon={card.icon}
+                              onClick={() => setViewingStudyNSW(true)}
+                            >
+                              {t(lang, card.descKey)}
+                            </SectionCard>
+                          );
+                        }
                         return (
-                          <a
+                          <NavigationDropdown
                             key={card.id}
-                            href={card.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md"
-                          >
-                            <span className="flex items-center gap-2">
-                              <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
-                                <Icon className="w-4 h-4" />
-                              </span>
-                              {t(lang, card.titleKey)}
-                            </span>
-                            <ChevronRight className="w-4 h-4 text-slate-400" />
-                          </a>
+                            title={t(lang, card.titleKey)}
+                            description={t(lang, card.descKey)}
+                            icon={card.icon}
+                            embedUrl={(card as any).embedUrl}
+                            externalUrl={(card as any).externalUrl}
+                          />
                         );
                       })}
                       <Dialog
@@ -1610,7 +1684,9 @@ export default function App() {
             </div>
           </div>
         </footer>
-      </main>
+        </main>
+          </>
+        )}
     </div>
   );
 }
