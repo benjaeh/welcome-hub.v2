@@ -974,13 +974,18 @@ export default function App() {
           }
         }}
       >
-        <div className="mx-6 max-w-4xl text-center">
-          <p
-            key={welcomeLangIndex}
-            className="welcome-display welcome-fade text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight"
-          >
-            {t(welcomeLang, "welcomeScreenMessage")}
-          </p>
+        <div className="mx-6 max-w-4xl text-left">
+          <div key={welcomeLangIndex} className="welcome-fade flex flex-col gap-4">
+            <p className="welcome-line-one text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight">
+              {t(welcomeLang, "welcomeScreenLine1")}
+            </p>
+            <p className="welcome-line-two text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase text-white leading-tight">
+              {t(welcomeLang, "welcomeScreenLine2")}
+            </p>
+            <p className="welcome-line-three text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tight">
+              {t(welcomeLang, "welcomeScreenLine3")}
+            </p>
+          </div>
         </div>
       </div>
       <header className="w-full bg-white shadow-sm">

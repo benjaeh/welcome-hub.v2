@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Gravitas+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bowlby+One&family=Shrikhand&family=Titan+One&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -121,9 +121,16 @@
   }
 }
 
-.welcome-display {
-  font-family: "Gravitas One", serif;
-  letter-spacing: -0.01em;
+.welcome-line-one {
+  font-family: "Shrikhand", serif;
+}
+
+.welcome-line-two {
+  font-family: "Bowlby One", sans-serif;
+}
+
+.welcome-line-three {
+  font-family: "Titan One", sans-serif;
 }
 
 .welcome-fade {
