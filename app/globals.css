@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Bowlby+One&family=Shrikhand&family=Titan+One&display=swap");
+@import "./fonts.css";
 
 @custom-variant dark (&:is(.dark *));
 
