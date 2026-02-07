@@ -158,7 +158,7 @@
   height: clamp(240px, 26vw, 420px);
   left: -6%;
   top: -10%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), rgba(106, 187, 229, 0.5) 58%, rgba(106, 187, 229, 0.2) 100%);
+  background: rgba(106, 187, 229, 0.52);
   animation: kioskBlobFloatA 16s ease-in-out infinite alternate;
 }
 
@@ -167,7 +167,7 @@
   height: clamp(220px, 24vw, 360px);
   right: 2%;
   top: 8%;
-  background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.3), rgba(245, 207, 87, 0.58) 60%, rgba(245, 207, 87, 0.2) 100%);
+  background: rgba(245, 207, 87, 0.58);
   animation: kioskBlobFloatB 18s ease-in-out infinite alternate;
 }
 
@@ -176,7 +176,7 @@
   height: clamp(260px, 28vw, 430px);
   right: -7%;
   bottom: -16%;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.25), rgba(64, 173, 141, 0.6) 62%, rgba(64, 173, 141, 0.22) 100%);
+  background: rgba(64, 173, 141, 0.58);
   animation: kioskBlobFloatC 20s ease-in-out infinite alternate;
 }
 
@@ -185,7 +185,7 @@
   height: clamp(180px, 20vw, 320px);
   left: 26%;
   bottom: -12%;
-  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.32), rgba(226, 77, 168, 0.56) 58%, rgba(226, 77, 168, 0.2) 100%);
+  background: rgba(226, 77, 168, 0.56);
   animation: kioskBlobFloatD 17s ease-in-out infinite alternate;
 }
 
