@@ -680,6 +680,8 @@ export default function App() {
   const [eoiError, setEoiError] = React.useState<string | null>(null);
   const [eoiSuccess, setEoiSuccess] = React.useState(false);
   const [activeEmbed, setActiveEmbed] = React.useState<{ title: string; url: string } | null>(null);
+  const [isEmbedClosing, setIsEmbedClosing] = React.useState(false);
+  const embedCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   React.useEffect(() => {
     const target = cardsRef.current;
@@ -709,6 +711,10 @@ export default function App() {
         clearTimeout(checkinCloseTimer.current);
         checkinCloseTimer.current = null;
       }
+      if (embedCloseTimer.current) {
+        clearTimeout(embedCloseTimer.current);
+        embedCloseTimer.current = null;
+      }
     };
   }, []);
 
@@ -721,7 +727,16 @@ export default function App() {
   }, []);
 
   const handleEmbedClose = React.useCallback(() => {
-    setActiveEmbed(null);
+    if (!activeEmbed || isEmbedClosing) return;
+    setIsEmbedClosing(true);
+    if (embedCloseTimer.current) {
+      clearTimeout(embedCloseTimer.current);
+    }
+    embedCloseTimer.current = setTimeout(() => {
+      setActiveEmbed(null);
+      setIsEmbedClosing(false);
+      embedCloseTimer.current = null;
+    }, 180);
   }, []);
 
   const cardsTransform = cardsVisible ? "translateY(0)" : "translateY(40px)";
@@ -1073,7 +1088,11 @@ export default function App() {
                 }}
               >
                 {activeEmbed ? (
-                  <div className="absolute inset-0 z-20 flex flex-col rounded-3xl bg-white p-4 md:p-6 embed-fade">
+                  <div
+                    className={`absolute inset-0 z-20 flex flex-col rounded-3xl bg-white p-4 md:p-6 ${
+                      isEmbedClosing ? "embed-fade-out" : "embed-fade"
+                    }`}
+                  >
                     <div className="mb-3 flex items-center justify-between gap-3">
                       <h2 className="text-lg font-semibold text-slate-900">{activeEmbed.title}</h2>
                       <button

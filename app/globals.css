@@ -170,3 +170,18 @@
     transform: translateY(0);
   }
 }
+
+.embed-fade-out {
+  animation: embedFadeOut 180ms ease-in;
+}
+
+@keyframes embedFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
