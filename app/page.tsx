@@ -593,6 +593,9 @@ export default function App() {
   const [lang, setLang] = React.useState<Lang>("en");
   const [isWelcomeVisible, setIsWelcomeVisible] = React.useState(true);
   const [welcomeLangIndex, setWelcomeLangIndex] = React.useState(0);
+  const [activeEmbed, setActiveEmbed] = React.useState<{ title: string; url: string } | null>(null);
+  const [isEmbedClosing, setIsEmbedClosing] = React.useState(false);
+  const embedCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const welcomeInactivityTimer = React.useRef<number | null>(null);
   const WELCOME_ROTATION_MS = 6500;
   const WELCOME_INACTIVITY_MS = 15000;
@@ -680,9 +683,6 @@ export default function App() {
   const [isSubmittingEoi, setIsSubmittingEoi] = React.useState(false);
   const [eoiError, setEoiError] = React.useState<string | null>(null);
   const [eoiSuccess, setEoiSuccess] = React.useState(false);
-  const [activeEmbed, setActiveEmbed] = React.useState<{ title: string; url: string } | null>(null);
-  const [isEmbedClosing, setIsEmbedClosing] = React.useState(false);
-  const embedCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   React.useEffect(() => {
     const target = cardsRef.current;
