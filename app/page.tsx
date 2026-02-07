@@ -1073,7 +1073,7 @@ export default function App() {
                 }}
               >
                 {activeEmbed ? (
-                  <div className="absolute inset-0 z-20 flex flex-col rounded-3xl bg-white p-4 md:p-6">
+                  <div className="absolute inset-0 z-20 flex flex-col rounded-3xl bg-white p-4 md:p-6 embed-fade">
                     <div className="mb-3 flex items-center justify-between gap-3">
                       <h2 className="text-lg font-semibold text-slate-900">{activeEmbed.title}</h2>
                       <button

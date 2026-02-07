@@ -155,3 +155,18 @@
     opacity: 0;
   }
 }
+
+.embed-fade {
+  animation: embedFade 220ms ease-out;
+}
+
+@keyframes embedFade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
