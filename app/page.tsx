@@ -1,7 +1,6 @@
 'use client';
 
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -988,7 +987,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div
-        className={`fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/80 backdrop-blur-md transition-opacity duration-500 ${
+        className={`fixed inset-0 z-[60] overflow-hidden transition-opacity duration-500 ${
           isWelcomeVisible ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         aria-hidden={!isWelcomeVisible}
@@ -1002,17 +1001,25 @@ export default function App() {
           }
         }}
       >
-        <div className="ml-4 mr-6 max-w-5xl text-left">
-          <div key={welcomeLangIndex} className="welcome-fade flex flex-col gap-3">
-            <p className="welcome-line-one welcome-shadow text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[0.95]">
-              {t(welcomeLang, "welcomeScreenLine1")}
-            </p>
-            <p className="welcome-line-two welcome-shadow text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-tight text-white leading-[0.95]">
-              {t(welcomeLang, "welcomeScreenLine2")}
-            </p>
-            <p className="welcome-line-three welcome-shadow text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-[0.95]">
-              {t(welcomeLang, "welcomeScreenLine3")}
-            </p>
+        <div className="absolute inset-0 kiosk-welcome-bg" aria-hidden="true" />
+        <div className="kiosk-blob kiosk-blob-a" aria-hidden="true" />
+        <div className="kiosk-blob kiosk-blob-b" aria-hidden="true" />
+        <div className="kiosk-blob kiosk-blob-c" aria-hidden="true" />
+        <div className="kiosk-blob kiosk-blob-d" aria-hidden="true" />
+        <div className="absolute inset-0 bg-black/14" aria-hidden="true" />
+        <div className="relative z-10 flex h-full items-center">
+          <div className="ml-4 mr-6 max-w-5xl text-left">
+            <div key={welcomeLangIndex} className="welcome-fade flex flex-col gap-3">
+              <p className="welcome-line-one welcome-shadow text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-[0.95]">
+                {t(welcomeLang, "welcomeScreenLine1")}
+              </p>
+              <p className="welcome-line-two welcome-shadow text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-tight text-white leading-[0.95]">
+                {t(welcomeLang, "welcomeScreenLine2")}
+              </p>
+              <p className="welcome-line-three welcome-shadow text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-[0.95]">
+                {t(welcomeLang, "welcomeScreenLine3")}
+              </p>
+            </div>
           </div>
         </div>
       </div>
