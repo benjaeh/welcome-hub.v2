@@ -148,44 +148,46 @@
 .kiosk-blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(1px);
-  opacity: 0.85;
+  filter: blur(0);
+  opacity: 1;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18);
   will-change: transform;
 }
 
 .kiosk-blob-a {
-  width: clamp(240px, 26vw, 420px);
-  height: clamp(240px, 26vw, 420px);
+  width: clamp(280px, 29vw, 460px);
+  height: clamp(280px, 29vw, 460px);
   left: -6%;
   top: -10%;
-  background: rgba(106, 187, 229, 0.52);
+  background: rgba(69, 166, 235, 0.9);
   animation: kioskBlobFloatA 16s ease-in-out infinite alternate;
 }
 
 .kiosk-blob-b {
-  width: clamp(220px, 24vw, 360px);
-  height: clamp(220px, 24vw, 360px);
+  width: clamp(260px, 26vw, 390px);
+  height: clamp(260px, 26vw, 390px);
   right: 2%;
   top: 8%;
-  background: rgba(245, 207, 87, 0.58);
+  background: rgba(255, 202, 40, 0.92);
   animation: kioskBlobFloatB 18s ease-in-out infinite alternate;
 }
 
 .kiosk-blob-c {
-  width: clamp(260px, 28vw, 430px);
-  height: clamp(260px, 28vw, 430px);
+  width: clamp(300px, 31vw, 470px);
+  height: clamp(300px, 31vw, 470px);
   right: -7%;
   bottom: -16%;
-  background: rgba(64, 173, 141, 0.58);
+  background: rgba(36, 185, 132, 0.9);
   animation: kioskBlobFloatC 20s ease-in-out infinite alternate;
 }
 
 .kiosk-blob-d {
-  width: clamp(180px, 20vw, 320px);
-  height: clamp(180px, 20vw, 320px);
+  width: clamp(220px, 22vw, 340px);
+  height: clamp(220px, 22vw, 340px);
   left: 26%;
   bottom: -12%;
-  background: rgba(226, 77, 168, 0.56);
+  background: rgba(235, 51, 166, 0.9);
   animation: kioskBlobFloatD 17s ease-in-out infinite alternate;
 }
 
