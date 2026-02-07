@@ -599,6 +599,7 @@ export default function App() {
   const welcomeInactivityTimer = React.useRef<number | null>(null);
   const WELCOME_ROTATION_MS = 6500;
   const WELCOME_INACTIVITY_MS = 15000;
+  const EMBED_INACTIVITY_MS = 360000;
 
   React.useEffect(() => {
     const saved = localStorage.getItem("hub.lang");
@@ -623,17 +624,21 @@ export default function App() {
   }, [isWelcomeVisible, WELCOME_ROTATION_MS]);
 
   React.useEffect(() => {
-    // While an embedded external page is open, pause kiosk idle reset.
-    // Cross-origin iframes do not propagate user activity reliably.
-    if (isWelcomeVisible || activeEmbed) return;
+    if (isWelcomeVisible) return;
+
+    // Cross-origin iframes do not expose internal interaction events.
+    // We still auto-return to kiosk, with a longer timeout while embed is open.
+    const inactivityMs = activeEmbed ? EMBED_INACTIVITY_MS : WELCOME_INACTIVITY_MS;
 
     const resetTimer = () => {
       if (welcomeInactivityTimer.current) {
         window.clearTimeout(welcomeInactivityTimer.current);
       }
       welcomeInactivityTimer.current = window.setTimeout(() => {
+        setActiveEmbed(null);
+        setIsEmbedClosing(false);
         setIsWelcomeVisible(true);
-      }, WELCOME_INACTIVITY_MS);
+      }, inactivityMs);
     };
 
     resetTimer();
@@ -647,7 +652,7 @@ export default function App() {
       }
       events.forEach((eventName) => window.removeEventListener(eventName, resetTimer));
     };
-  }, [isWelcomeVisible, activeEmbed, WELCOME_INACTIVITY_MS]);
+  }, [isWelcomeVisible, activeEmbed, WELCOME_INACTIVITY_MS, EMBED_INACTIVITY_MS]);
 
   React.useEffect(() => {
     if (!isWelcomeVisible) return;
