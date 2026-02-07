@@ -723,11 +723,15 @@ export default function App() {
   }, []);
 
   const handleEmbedOpen = React.useCallback((payload: { title: string; url: string }) => {
+    if (embedCloseTimer.current) {
+      clearTimeout(embedCloseTimer.current);
+      embedCloseTimer.current = null;
+    }
+    setIsEmbedClosing(false);
     setActiveEmbed(payload);
   }, []);
 
   const handleEmbedClose = React.useCallback(() => {
-    if (!activeEmbed || isEmbedClosing) return;
     setIsEmbedClosing(true);
     if (embedCloseTimer.current) {
       clearTimeout(embedCloseTimer.current);
