@@ -209,37 +209,37 @@
 
 @keyframes kioskBlobFloatA {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   100% {
-    transform: translate3d(5%, 8%, 0) scale(1.08);
+    transform: translate3d(10%, 14%, 0) scale(1.12) rotate(6deg);
   }
 }
 
 @keyframes kioskBlobFloatB {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   100% {
-    transform: translate3d(-8%, 6%, 0) scale(1.06);
+    transform: translate3d(-14%, 10%, 0) scale(1.1) rotate(-7deg);
   }
 }
 
 @keyframes kioskBlobFloatC {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   100% {
-    transform: translate3d(-7%, -8%, 0) scale(1.07);
+    transform: translate3d(-12%, -14%, 0) scale(1.1) rotate(8deg);
   }
 }
 
 @keyframes kioskBlobFloatD {
   0% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
   }
   100% {
-    transform: translate3d(6%, -6%, 0) scale(1.05);
+    transform: translate3d(11%, -10%, 0) scale(1.09) rotate(-5deg);
   }
 }
 

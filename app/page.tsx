@@ -620,7 +620,9 @@ export default function App() {
   }, [isWelcomeVisible, WELCOME_ROTATION_MS]);
 
   React.useEffect(() => {
-    if (isWelcomeVisible) return;
+    // While an embedded external page is open, pause kiosk idle reset.
+    // Cross-origin iframes do not propagate user activity reliably.
+    if (isWelcomeVisible || activeEmbed) return;
 
     const resetTimer = () => {
       if (welcomeInactivityTimer.current) {
@@ -642,7 +644,7 @@ export default function App() {
       }
       events.forEach((eventName) => window.removeEventListener(eventName, resetTimer));
     };
-  }, [isWelcomeVisible, WELCOME_INACTIVITY_MS]);
+  }, [isWelcomeVisible, activeEmbed, WELCOME_INACTIVITY_MS]);
 
   React.useEffect(() => {
     if (!isWelcomeVisible) return;
