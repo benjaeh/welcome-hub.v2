@@ -138,7 +138,7 @@
 }
 
 .welcome-fade {
-  animation: welcomeFade 2.5s ease-in-out;
+  animation: welcomeFade 6.5s ease-in-out;
 }
 
 @keyframes welcomeFade {

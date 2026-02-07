@@ -595,7 +595,7 @@ export default function App() {
   const [isWelcomeVisible, setIsWelcomeVisible] = React.useState(true);
   const [welcomeLangIndex, setWelcomeLangIndex] = React.useState(0);
   const welcomeInactivityTimer = React.useRef<number | null>(null);
-  const WELCOME_ROTATION_MS = 2500;
+  const WELCOME_ROTATION_MS = 6500;
   const WELCOME_INACTIVITY_MS = 15000;
 
   React.useEffect(() => {
