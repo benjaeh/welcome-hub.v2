@@ -147,49 +147,64 @@
 
 .kiosk-blob {
   position: absolute;
+  width: var(--blob-size);
+  height: var(--blob-size);
+  left: var(--x-start);
+  top: var(--y-start);
   border-radius: 9999px;
   filter: none;
   opacity: 1;
   border: none;
   box-shadow: none;
   mix-blend-mode: normal;
-  will-change: transform;
+  will-change: left, top;
+  animation:
+    kioskBounceX var(--dur-x) linear infinite alternate,
+    kioskBounceY var(--dur-y) linear infinite alternate;
 }
 
 .kiosk-blob-a {
-  width: clamp(280px, 29vw, 460px);
-  height: clamp(280px, 29vw, 460px);
-  left: -6%;
-  top: -10%;
+  --blob-size: clamp(280px, 29vw, 460px);
+  --x-start: 10px;
+  --x-end: calc(100vw - var(--blob-size) - 10px);
+  --y-start: 14px;
+  --y-end: calc(100vh - var(--blob-size) - 14px);
+  --dur-x: 3.4s;
+  --dur-y: 4.2s;
   background: #45a6eb;
-  animation: kioskBlobFloatA 16s ease-in-out infinite alternate;
 }
 
 .kiosk-blob-b {
-  width: clamp(260px, 26vw, 390px);
-  height: clamp(260px, 26vw, 390px);
-  right: 2%;
-  top: 8%;
+  --blob-size: clamp(260px, 26vw, 390px);
+  --x-start: calc(100vw - var(--blob-size) - 18px);
+  --x-end: 18px;
+  --y-start: 44px;
+  --y-end: calc(100vh - var(--blob-size) - 22px);
+  --dur-x: 3s;
+  --dur-y: 3.8s;
   background: #ffca28;
-  animation: kioskBlobFloatB 18s ease-in-out infinite alternate;
 }
 
 .kiosk-blob-c {
-  width: clamp(300px, 31vw, 470px);
-  height: clamp(300px, 31vw, 470px);
-  right: -7%;
-  bottom: -16%;
+  --blob-size: clamp(300px, 31vw, 470px);
+  --x-start: calc(100vw - var(--blob-size) - 12px);
+  --x-end: 12px;
+  --y-start: calc(100vh - var(--blob-size) - 18px);
+  --y-end: 20px;
+  --dur-x: 3.6s;
+  --dur-y: 3.2s;
   background: #24b984;
-  animation: kioskBlobFloatC 20s ease-in-out infinite alternate;
 }
 
 .kiosk-blob-d {
-  width: clamp(220px, 22vw, 340px);
-  height: clamp(220px, 22vw, 340px);
-  left: 26%;
-  bottom: -12%;
+  --blob-size: clamp(220px, 22vw, 340px);
+  --x-start: 30%;
+  --x-end: calc(100vw - var(--blob-size) - 10px);
+  --y-start: calc(100vh - var(--blob-size) - 12px);
+  --y-end: 24px;
+  --dur-x: 2.8s;
+  --dur-y: 3.5s;
   background: #eb33a6;
-  animation: kioskBlobFloatD 17s ease-in-out infinite alternate;
 }
 
 .welcome-fade {
@@ -211,39 +226,21 @@
   }
 }
 
-@keyframes kioskBlobFloatA {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+@keyframes kioskBounceX {
+  from {
+    left: var(--x-start);
   }
-  100% {
-    transform: translate3d(16%, 22%, 0) scale(1.16) rotate(9deg);
-  }
-}
-
-@keyframes kioskBlobFloatB {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
-  }
-  100% {
-    transform: translate3d(-20%, 14%, 0) scale(1.14) rotate(-10deg);
+  to {
+    left: var(--x-end);
   }
 }
 
-@keyframes kioskBlobFloatC {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+@keyframes kioskBounceY {
+  from {
+    top: var(--y-start);
   }
-  100% {
-    transform: translate3d(-18%, -20%, 0) scale(1.15) rotate(11deg);
-  }
-}
-
-@keyframes kioskBlobFloatD {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
-  }
-  100% {
-    transform: translate3d(17%, -15%, 0) scale(1.13) rotate(-9deg);
+  to {
+    top: var(--y-end);
   }
 }
 
