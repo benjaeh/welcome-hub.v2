@@ -624,7 +624,9 @@ export default function App() {
   }, [isWelcomeVisible, WELCOME_ROTATION_MS]);
 
   React.useEffect(() => {
-    if (isWelcomeVisible) return;
+    // Pause kiosk idle while user is actively filling check-in form.
+    // Resume once they submit successfully or close the dialog.
+    if (isWelcomeVisible || (isCheckinOpen && !checkinSuccess)) return;
 
     // Cross-origin iframes do not expose internal interaction events.
     // We still auto-return to kiosk, with a longer timeout while embed is open.
@@ -652,7 +654,7 @@ export default function App() {
       }
       events.forEach((eventName) => window.removeEventListener(eventName, resetTimer));
     };
-  }, [isWelcomeVisible, activeEmbed, WELCOME_INACTIVITY_MS, EMBED_INACTIVITY_MS]);
+  }, [isWelcomeVisible, isCheckinOpen, checkinSuccess, activeEmbed, WELCOME_INACTIVITY_MS, EMBED_INACTIVITY_MS]);
 
   React.useEffect(() => {
     if (!isWelcomeVisible) return;
@@ -1258,7 +1260,7 @@ export default function App() {
 
                                 <div className="grid gap-1.5">
                                   <Label htmlFor="checkin-mobile" className={LABEL_CLASS}>
-                                    {t(lang, "formMobileLabel")} <span className="text-red-500">*</span>
+                                    {t(lang, "formMobileLabel")}
                                   </Label>
                                   <div className="flex items-center gap-2">
                                     <div className="flex-1">
