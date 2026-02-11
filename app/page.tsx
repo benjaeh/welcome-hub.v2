@@ -593,6 +593,8 @@ export default function App() {
   const [lang, setLang] = React.useState<Lang>("en");
   const [isWelcomeVisible, setIsWelcomeVisible] = React.useState(true);
   const [welcomeLangIndex, setWelcomeLangIndex] = React.useState(0);
+  const [isCheckinOpen, setIsCheckinOpen] = React.useState(false);
+  const [checkinSuccess, setCheckinSuccess] = React.useState(false);
   const [activeEmbed, setActiveEmbed] = React.useState<{ title: string; url: string } | null>(null);
   const [isEmbedClosing, setIsEmbedClosing] = React.useState(false);
   const embedCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -673,11 +675,9 @@ export default function App() {
     : "—";
   const cardsRef = React.useRef<HTMLDivElement>(null);
   const [cardsVisible, setCardsVisible] = React.useState(false);
-  const [isCheckinOpen, setIsCheckinOpen] = React.useState(false);
   const [checkinForm, setCheckinForm] = React.useState<CheckinFormState>(() => createEmptyCheckinForm());
   const [isSubmittingCheckin, setIsSubmittingCheckin] = React.useState(false);
   const [checkinError, setCheckinError] = React.useState<string | null>(null);
-  const [checkinSuccess, setCheckinSuccess] = React.useState(false);
   const [showCheckinBanner, setShowCheckinBanner] = React.useState(false);
   const [countrySearch, setCountrySearch] = React.useState("");
   const [countrySearchVisible, setCountrySearchVisible] = React.useState(false);
