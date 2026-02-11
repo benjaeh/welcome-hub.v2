@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -129,7 +129,7 @@ const COUNTRY_OPTIONS = [
   "Congo (Republic)",
   "Congo (Democratic Republic)",
   "Costa Rica",
-  "Côte d’Ivoire",
+  "CÃ´te dâ€™Ivoire",
   "Croatia",
   "Cuba",
   "Cyprus",
@@ -335,7 +335,7 @@ const PHONE_COUNTRY_CODE_DATA: Array<{ country: string; dial: string; iso: strin
   { country: "Congo (Republic)", dial: "+242", iso: "CG" },
   { country: "Congo (Democratic Republic)", dial: "+243", iso: "CD" },
   { country: "Costa Rica", dial: "+506", iso: "CR" },
-  { country: "Côte d’Ivoire", dial: "+225", iso: "CI" },
+  { country: "CÃ´te dâ€™Ivoire", dial: "+225", iso: "CI" },
   { country: "Croatia", dial: "+385", iso: "HR" },
   { country: "Cuba", dial: "+53", iso: "CU" },
   { country: "Cyprus", dial: "+357", iso: "CY" },
@@ -493,9 +493,9 @@ const PHONE_COUNTRY_CODE_DATA: Array<{ country: string; dial: string; iso: strin
 ] as const;
 
 function isoToFlag(iso: string): string {
-  if (!iso) return "🌐";
+  if (!iso) return "ðŸŒ";
   const letters = iso.toUpperCase().replace(/[^A-Z]/g, "");
-  if (letters.length !== 2) return "🌐";
+  if (letters.length !== 2) return "ðŸŒ";
   return letters
     .split("")
     .map((char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
@@ -591,31 +591,31 @@ function createEmptyCheckinForm(): CheckinFormState {
 /** ---- Component ---- */
 export default function App() {
   const LANGUAGE_FLAGS: Record<Lang, string> = {
-    en: "🇦🇺",
-    es: "🇪🇸",
-    zh: "🇨🇳",
-    de: "🇩🇪",
-    fr: "🇫🇷",
-    it: "🇮🇹",
-    pt: "🇧🇷",
-    ko: "🇰🇷",
-    ja: "🇯🇵",
-    hi: "🇮🇳",
-    ne: "🇳🇵",
+    en: "\u{1F1E6}\u{1F1FA}",
+    es: "\u{1F1EA}\u{1F1F8}",
+    zh: "\u{1F1E8}\u{1F1F3}",
+    de: "\u{1F1E9}\u{1F1EA}",
+    fr: "\u{1F1EB}\u{1F1F7}",
+    it: "\u{1F1EE}\u{1F1F9}",
+    pt: "\u{1F1E7}\u{1F1F7}",
+    ko: "\u{1F1F0}\u{1F1F7}",
+    ja: "\u{1F1EF}\u{1F1F5}",
+    hi: "\u{1F1EE}\u{1F1F3}",
+    ne: "\u{1F1F3}\u{1F1F5}",
   };
 
   const LANGUAGE_NAMES: Record<Lang, string> = {
     en: "English",
-    es: "Español",
-    zh: "中文 (Mandarin)",
-    de: "Deutsch",
-    fr: "Français",
-    it: "Italiano",
-    pt: "Português",
-    ko: "한국어",
-    ja: "日本語",
-    hi: "हिन्दी",
-    ne: "नेपाली",
+    es: "Spanish",
+    zh: "Chinese (Mandarin)",
+    de: "German",
+    fr: "French",
+    it: "Italian",
+    pt: "Portuguese",
+    ko: "Korean",
+    ja: "Japanese",
+    hi: "Hindi",
+    ne: "Nepali",
   };
 
   const [lang, setLang] = React.useState<Lang>("en");
@@ -700,7 +700,7 @@ export default function App() {
   const dateLocale = LOCALE_MAP[lang] ?? LOCALE_MAP.en;
   const dateStr = now
     ? now.toLocaleString(dateLocale, { dateStyle: "full", timeStyle: "short" })
-    : "—";
+    : "â€”";
   const cardsRef = React.useRef<HTMLDivElement>(null);
   const [cardsVisible, setCardsVisible] = React.useState(false);
   const [checkinForm, setCheckinForm] = React.useState<CheckinFormState>(() => createEmptyCheckinForm());
@@ -1159,7 +1159,7 @@ export default function App() {
                         onClick={handleEmbedClose}
                         className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
                       >
-                        <span aria-hidden="true">×</span>
+                        <span aria-hidden="true">Ã—</span>
                         {t(lang, "embedCloseButton")}
                       </button>
                     </div>
@@ -1769,7 +1769,7 @@ export default function App() {
                       rel="noreferrer"
                       className="text-sm font-medium text-teal-600 hover:text-teal-700 transition inline-flex items-center gap-1"
                     >
-                      {t(lang, "announcementsLink")} <span aria-hidden="true">↗</span>
+                      {t(lang, "announcementsLink")} <span aria-hidden="true">â†—</span>
                     </a>
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -1817,7 +1817,7 @@ export default function App() {
               <a className="underline" href="https://www.study.nsw.gov.au/" target="_blank" rel="noreferrer">
                 study.nsw.gov.au
               </a>
-              <span>•</span>
+              <span>â€¢</span>
               <a className="underline" href="https://communiteer.org/" target="_blank" rel="noreferrer">
                 communiteer.org
               </a>
