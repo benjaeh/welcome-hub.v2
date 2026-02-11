@@ -590,6 +590,34 @@ function createEmptyCheckinForm(): CheckinFormState {
 
 /** ---- Component ---- */
 export default function App() {
+  const LANGUAGE_FLAGS: Record<Lang, string> = {
+    en: "🇦🇺",
+    es: "🇪🇸",
+    zh: "🇨🇳",
+    de: "🇩🇪",
+    fr: "🇫🇷",
+    it: "🇮🇹",
+    pt: "🇧🇷",
+    ko: "🇰🇷",
+    ja: "🇯🇵",
+    hi: "🇮🇳",
+    ne: "🇳🇵",
+  };
+
+  const LANGUAGE_NAMES: Record<Lang, string> = {
+    en: "English",
+    es: "Español",
+    zh: "中文 (Mandarin)",
+    de: "Deutsch",
+    fr: "Français",
+    it: "Italiano",
+    pt: "Português",
+    ko: "한국어",
+    ja: "日本語",
+    hi: "हिन्दी",
+    ne: "नेपाली",
+  };
+
   const [lang, setLang] = React.useState<Lang>("en");
   const [isWelcomeVisible, setIsWelcomeVisible] = React.useState(true);
   const [welcomeLangIndex, setWelcomeLangIndex] = React.useState(0);
@@ -1031,6 +1059,17 @@ export default function App() {
             </div>
           </div>
         </div>
+        <div className="pointer-events-none absolute bottom-6 right-6 z-20 max-w-md text-right">
+          <p className="welcome-line-one welcome-shadow text-xl sm:text-2xl text-white leading-tight">
+            {t("en", "welcomeScreenLine1")}
+          </p>
+          <p className="welcome-line-two welcome-shadow mt-1 text-2xl sm:text-3xl uppercase text-white leading-tight">
+            {t("en", "welcomeScreenLine2")}
+          </p>
+          <p className="welcome-line-three welcome-shadow mt-1 text-lg sm:text-xl text-white leading-tight">
+            {t("en", "welcomeScreenLine3")}
+          </p>
+        </div>
       </div>
       <header className="w-full bg-white shadow-sm">
         <div className="w-full flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:px-12">
@@ -1061,7 +1100,7 @@ export default function App() {
             >
               {LANGS.map((l) => (
                 <option key={l.code} value={l.code}>
-                  {l.label}
+                  {`${LANGUAGE_FLAGS[l.code]} ${LANGUAGE_NAMES[l.code]}`}
                 </option>
               ))}
             </select>
