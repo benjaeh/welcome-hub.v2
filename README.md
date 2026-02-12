@@ -45,7 +45,8 @@ Set these environment variables in Vercel or `.env.local`:
 - `ACTIVE_CAMPAIGN_API_URL` or `ACTIVE_CAMPAIGN_URL`
   - Example: `https://youraccount.api-us1.com` (the route appends `/api/3` automatically if needed)
 - `ACTIVE_CAMPAIGN_API_KEY`
-- `ACTIVE_CAMPAIGN_LIST_ID` (optional but recommended)
+- `ACTIVE_CAMPAIGN_LIST_IDS` (optional, comma-separated list ids, recommended)
+- `ACTIVE_CAMPAIGN_LIST_ID` (optional legacy single list id, still supported)
 - `ACTIVE_CAMPAIGN_TAG_IDS` (optional, comma-separated)
 
 Optional fallback destination:

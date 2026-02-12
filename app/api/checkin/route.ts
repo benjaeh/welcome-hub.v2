@@ -51,6 +51,22 @@ function parseTagIds(raw: string | undefined): string[] {
     .filter(Boolean);
 }
 
+function parseListIds(raw: string | undefined, legacySingleListId: string): string[] {
+  const fromList = raw
+    ? raw
+        .split(",")
+        .map((listId) => listId.trim())
+        .filter(Boolean)
+    : [];
+
+  const merged = [...fromList];
+  if (legacySingleListId) {
+    merged.push(legacySingleListId);
+  }
+
+  return Array.from(new Set(merged));
+}
+
 async function readErrorBody(response: Response): Promise<string> {
   const text = await response.text().catch(() => "");
   return text.slice(0, 1000);
@@ -94,7 +110,7 @@ async function syncWithActiveCampaign(
   config: {
     apiUrl: string;
     apiKey: string;
-    listId: string;
+    listIds: string[];
     tagIds: string[];
   }
 ) {
@@ -116,14 +132,19 @@ async function syncWithActiveCampaign(
     throw new Error("ActiveCampaign contact sync did not return a contact id.");
   }
 
-  if (config.listId) {
-    await postJson(config.apiUrl, "/contactLists", config.apiKey, {
-      contactList: {
-        list: config.listId,
-        contact: contactId,
-        status: 1,
-      },
-    });
+  for (const listId of config.listIds) {
+    try {
+      await postJson(config.apiUrl, "/contactLists", config.apiKey, {
+        contactList: {
+          list: listId,
+          contact: contactId,
+          status: 1,
+        },
+      });
+    } catch (error) {
+      // A list sync issue should not block the full check-in.
+      console.warn(`ActiveCampaign list sync warning for list ${listId}:`, error);
+    }
   }
 
   for (const tagId of config.tagIds) {
@@ -160,7 +181,11 @@ export async function POST(request: Request) {
   const configuredActiveCampaignUrl = parseString(
     process.env.ACTIVE_CAMPAIGN_API_URL || process.env.ACTIVE_CAMPAIGN_URL
   );
-  const activeCampaignListId = parseString(process.env.ACTIVE_CAMPAIGN_LIST_ID);
+  const legacyActiveCampaignListId = parseString(process.env.ACTIVE_CAMPAIGN_LIST_ID);
+  const activeCampaignListIds = parseListIds(
+    process.env.ACTIVE_CAMPAIGN_LIST_IDS,
+    legacyActiveCampaignListId
+  );
   const activeCampaignTagIds = parseTagIds(process.env.ACTIVE_CAMPAIGN_TAG_IDS);
 
   const hasActiveCampaign = Boolean(configuredActiveCampaignUrl && activeCampaignApiKey);
@@ -236,7 +261,7 @@ export async function POST(request: Request) {
       await syncWithActiveCampaign(submission, {
         apiUrl: normalizeApiBaseUrl(configuredActiveCampaignUrl),
         apiKey: activeCampaignApiKey,
-        listId: activeCampaignListId,
+        listIds: activeCampaignListIds,
         tagIds: activeCampaignTagIds,
       });
     } catch (error) {
