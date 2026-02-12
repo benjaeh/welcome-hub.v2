@@ -34,3 +34,26 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## ActiveCampaign Check-in Integration
+
+The check-in form posts to `POST /api/checkin`.
+This route now supports ActiveCampaign as the primary destination.
+
+Set these environment variables in Vercel or `.env.local`:
+
+- `ACTIVE_CAMPAIGN_API_URL` or `ACTIVE_CAMPAIGN_URL`
+  - Example: `https://youraccount.api-us1.com` (the route appends `/api/3` automatically if needed)
+- `ACTIVE_CAMPAIGN_API_KEY`
+- `ACTIVE_CAMPAIGN_LIST_ID` (optional but recommended)
+- `ACTIVE_CAMPAIGN_TAG_IDS` (optional, comma-separated)
+
+Optional fallback destination:
+
+- `GOOGLE_SHEETS_WEBHOOK_URL`
+
+Behavior:
+
+- If ActiveCampaign is configured, check-ins are synced there.
+- If `GOOGLE_SHEETS_WEBHOOK_URL` is also configured, submissions are also posted there.
+- If neither destination is configured, `/api/checkin` returns `500`.
