@@ -627,6 +627,7 @@ export default function App() {
   const [isEmbedClosing, setIsEmbedClosing] = React.useState(false);
   const embedCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const welcomeInactivityTimer = React.useRef<number | null>(null);
+  const ENABLE_KIOSK_AUTO_RETURN = false;
   const WELCOME_ROTATION_MS = 6500;
   const WELCOME_INACTIVITY_MS = 15000;
   const EMBED_INACTIVITY_MS = 360000;
@@ -654,6 +655,8 @@ export default function App() {
   }, [isWelcomeVisible, WELCOME_ROTATION_MS]);
 
   React.useEffect(() => {
+    if (!ENABLE_KIOSK_AUTO_RETURN) return;
+
     // Pause kiosk idle while user is actively filling check-in form.
     // Resume once they submit successfully or close the dialog.
     if (isWelcomeVisible || (isCheckinOpen && !checkinSuccess)) return;
@@ -684,7 +687,15 @@ export default function App() {
       }
       events.forEach((eventName) => window.removeEventListener(eventName, resetTimer));
     };
-  }, [isWelcomeVisible, isCheckinOpen, checkinSuccess, activeEmbed, WELCOME_INACTIVITY_MS, EMBED_INACTIVITY_MS]);
+  }, [
+    ENABLE_KIOSK_AUTO_RETURN,
+    isWelcomeVisible,
+    isCheckinOpen,
+    checkinSuccess,
+    activeEmbed,
+    WELCOME_INACTIVITY_MS,
+    EMBED_INACTIVITY_MS,
+  ]);
 
   React.useEffect(() => {
     if (!isWelcomeVisible) return;
@@ -1617,7 +1628,7 @@ export default function App() {
                               embedUrl={card.embedUrl}
                               externalUrl={card.externalUrl}
                               onEmbedOpen={card.embedUrl ? handleEmbedOpen : undefined}
-                              returnAfterMs={card.returnAfterMs}
+                              returnAfterMs={ENABLE_KIOSK_AUTO_RETURN ? card.returnAfterMs : undefined}
                               returnTo="/"
                               closeLabel={t(lang, "embedCloseButton")}
                               fallbackTitle={t(lang, "embedFallbackTitle")}
