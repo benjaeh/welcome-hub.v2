@@ -1614,8 +1614,12 @@ export default function App() {
                       </div>
                       <div className="text-lg md:text-xl font-bold text-slate-900 leading-tight">{dateStr}</div>
                     </div>
-                    {SHOW_INFO_AND_EOI_CARDS ? (
-                      <div className="space-y-2">
+                    <div
+                      className={`space-y-2 ${
+                        SHOW_INFO_AND_EOI_CARDS ? "" : "pointer-events-none invisible select-none"
+                      }`}
+                      aria-hidden={!SHOW_INFO_AND_EOI_CARDS}
+                    >
                         {HERO_INFO_CARDS.map((card) => {
                           const Icon = card.icon;
                           const cardClassName =
@@ -1766,12 +1770,15 @@ export default function App() {
                             )}
                           </DialogContent>
                         </Dialog>
-                      </div>
-                    ) : null}
+                    </div>
                   </aside>
                 </div>
-                {SHOW_WHATS_ON_SECTION ? (
-                  <div className="space-y-6">
+                <div
+                  className={`space-y-6 ${
+                    SHOW_WHATS_ON_SECTION ? "" : "pointer-events-none invisible select-none"
+                  }`}
+                  aria-hidden={!SHOW_WHATS_ON_SECTION}
+                >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                       <div className="space-y-1.5">
                           <h2 id="whats-on-heading" className="text-2xl font-semibold text-slate-900">
@@ -1803,8 +1810,7 @@ export default function App() {
                         </div>
                       ))}
                     </div>
-                  </div>
-                ) : null}
+                </div>
               </div>
             </div>
           </div>
