@@ -628,6 +628,8 @@ export default function App() {
   const embedCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const welcomeInactivityTimer = React.useRef<number | null>(null);
   const ENABLE_KIOSK_AUTO_RETURN = false;
+  const SHOW_INFO_AND_EOI_CARDS = false;
+  const SHOW_WHATS_ON_SECTION = false;
   const WELCOME_ROTATION_MS = 6500;
   const WELCOME_INACTIVITY_MS = 15000;
   const EMBED_INACTIVITY_MS = 360000;
@@ -1612,193 +1614,197 @@ export default function App() {
                       </div>
                       <div className="text-lg md:text-xl font-bold text-slate-900 leading-tight">{dateStr}</div>
                     </div>
-                    <div className="space-y-2">
-                      {HERO_INFO_CARDS.map((card) => {
-                        const Icon = card.icon;
-                        const cardClassName =
-                          "flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md";
+                    {SHOW_INFO_AND_EOI_CARDS ? (
+                      <div className="space-y-2">
+                        {HERO_INFO_CARDS.map((card) => {
+                          const Icon = card.icon;
+                          const cardClassName =
+                            "flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md";
 
-                        if (card.embedUrl || card.externalUrl) {
-                          return (
-                            <NavigationModalLink
-                              key={card.id}
-                              title={t(lang, card.titleKey)}
-                              icon={Icon}
-                              className={cardClassName}
-                              embedUrl={card.embedUrl}
-                              externalUrl={card.externalUrl}
-                              onEmbedOpen={card.embedUrl ? handleEmbedOpen : undefined}
-                              returnAfterMs={ENABLE_KIOSK_AUTO_RETURN ? card.returnAfterMs : undefined}
-                              returnTo="/"
-                              closeLabel={t(lang, "embedCloseButton")}
-                              fallbackTitle={t(lang, "embedFallbackTitle")}
-                              fallbackBody={t(lang, "embedFallbackBody")}
-                              fallbackActionLabel={t(lang, "embedFallbackAction")}
-                            />
-                          );
-                        }
-
-                        return (
-                          <a
-                            key={card.id}
-                            href={card.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            className={cardClassName}
-                          >
-                            <span className="flex items-center gap-2">
-                              <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
-                                <Icon className="w-4 h-4" />
-                              </span>
-                              {t(lang, card.titleKey)}
-                            </span>
-                            <ChevronRight className="w-4 h-4 text-slate-400" />
-                          </a>
-                        );
-                      })}
-                      <Dialog
-                        open={isEoiOpen}
-                        onOpenChange={(open) => {
-                          setIsEoiOpen(open);
-                          if (!open) {
-                            setEoiError(null);
-                            setEoiSuccess(false);
-                            setEoiForm(EOI_FORM_DEFAULT);
-                            setIsSubmittingEoi(false);
+                          if (card.embedUrl || card.externalUrl) {
+                            return (
+                              <NavigationModalLink
+                                key={card.id}
+                                title={t(lang, card.titleKey)}
+                                icon={Icon}
+                                className={cardClassName}
+                                embedUrl={card.embedUrl}
+                                externalUrl={card.externalUrl}
+                                onEmbedOpen={card.embedUrl ? handleEmbedOpen : undefined}
+                                returnAfterMs={ENABLE_KIOSK_AUTO_RETURN ? card.returnAfterMs : undefined}
+                                returnTo="/"
+                                closeLabel={t(lang, "embedCloseButton")}
+                                fallbackTitle={t(lang, "embedFallbackTitle")}
+                                fallbackBody={t(lang, "embedFallbackBody")}
+                                fallbackActionLabel={t(lang, "embedFallbackAction")}
+                              />
+                            );
                           }
-                        }}
-                      >
-                        <DialogTrigger asChild>
-                          <button className="w-full rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-left text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md">
-                            <span className="flex items-center gap-2">
-                              <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
-                                <ClipboardList className="w-4 h-4" />
+
+                          return (
+                            <a
+                              key={card.id}
+                              href={card.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className={cardClassName}
+                            >
+                              <span className="flex items-center gap-2">
+                                <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
+                                  <Icon className="w-4 h-4" />
+                                </span>
+                                {t(lang, card.titleKey)}
                               </span>
-                              {t(lang, "newsletterTitle")}
-                            </span>
-                          </button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[460px]">
-                          <DialogHeader className="space-y-3">
-                            <DialogTitle>{t(lang, "newsletterModalTitle")}</DialogTitle>
-                            <DialogDescription>{t(lang, "newsletterModalDesc")}</DialogDescription>
-                            <p className="text-xs text-muted-foreground">
-                              {t(lang, "eoiHelperBlurb")}
-                            </p>
-                          </DialogHeader>
-                          {eoiError ? (
-                            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                              {eoiError}
-                            </div>
-                          ) : null}
-                          {eoiSuccess ? (
-                            <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm font-medium text-emerald-800">
-                              {t(lang, "eoiSuccess")}
-                            </div>
-                          ) : (
-                            <form onSubmit={handleEoiSubmit} className="space-y-4">
-                              <div className="grid gap-1.5">
-                                <Label htmlFor="eoi-first-name" className={LABEL_CLASS}>
-                                  {t(lang, "formFirstNameLabel")} <span className="text-red-500">*</span>
-                                </Label>
-                                <Input
-                                  id="eoi-first-name"
-                                  value={eoiForm.firstName}
-                                  onChange={handleEoiInputChange("firstName")}
-                                  className={FIELD_CLASS}
-                                />
+                              <ChevronRight className="w-4 h-4 text-slate-400" />
+                            </a>
+                          );
+                        })}
+                        <Dialog
+                          open={isEoiOpen}
+                          onOpenChange={(open) => {
+                            setIsEoiOpen(open);
+                            if (!open) {
+                              setEoiError(null);
+                              setEoiSuccess(false);
+                              setEoiForm(EOI_FORM_DEFAULT);
+                              setIsSubmittingEoi(false);
+                            }
+                          }}
+                        >
+                          <DialogTrigger asChild>
+                            <button className="w-full rounded-2xl border border-slate-200 bg-white/90 px-3 py-2.5 text-left text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-md">
+                              <span className="flex items-center gap-2">
+                                <span className="rounded-xl bg-teal-50 p-2 text-teal-600">
+                                  <ClipboardList className="w-4 h-4" />
+                                </span>
+                                {t(lang, "newsletterTitle")}
+                              </span>
+                            </button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[460px]">
+                            <DialogHeader className="space-y-3">
+                              <DialogTitle>{t(lang, "newsletterModalTitle")}</DialogTitle>
+                              <DialogDescription>{t(lang, "newsletterModalDesc")}</DialogDescription>
+                              <p className="text-xs text-muted-foreground">
+                                {t(lang, "eoiHelperBlurb")}
+                              </p>
+                            </DialogHeader>
+                            {eoiError ? (
+                              <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                                {eoiError}
                               </div>
-                              <div className="grid gap-1.5">
-                                <Label htmlFor="eoi-last-name" className={LABEL_CLASS}>
-                                  {t(lang, "formLastNameLabel")} <span className="text-red-500">*</span>
-                                </Label>
-                                <Input
-                                  id="eoi-last-name"
-                                  value={eoiForm.lastName}
-                                  onChange={handleEoiInputChange("lastName")}
-                                  className={FIELD_CLASS}
-                                />
+                            ) : null}
+                            {eoiSuccess ? (
+                              <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-sm font-medium text-emerald-800">
+                                {t(lang, "eoiSuccess")}
                               </div>
-                              <div className="grid gap-1.5">
-                                <Label htmlFor="eoi-email" className={LABEL_CLASS}>
-                                  {t(lang, "formPrimaryEmailLabel")} <span className="text-red-500">*</span>
-                                </Label>
-                                <Input
-                                  id="eoi-email"
-                                  type="email"
-                                  value={eoiForm.email}
-                                  onChange={handleEoiInputChange("email")}
-                                  className={FIELD_CLASS}
-                                />
-                              </div>
-                              <div className="grid gap-1.5">
-                                <Label htmlFor="eoi-interest" className={LABEL_CLASS}>
-                                  {t(lang, "eoiInterestLabel")} <span className="text-red-500">*</span>
-                                </Label>
-                                <Input
-                                  id="eoi-interest"
-                                  value={eoiForm.interest}
-                                  onChange={handleEoiInputChange("interest")}
-                                  placeholder={t(lang, "eoiInterestPlaceholder")}
-                                  className={FIELD_CLASS}
-                                />
-                              </div>
-                              <div className="grid gap-1.5">
-                                <Label htmlFor="eoi-details" className={LABEL_CLASS}>
-                                  {t(lang, "eoiDetailsLabel")}
-                                </Label>
-                                <textarea
-                                  id="eoi-details"
-                                  value={eoiForm.details}
-                                  onChange={handleEoiInputChange("details")}
-                                  className={`${FIELD_CLASS} min-h-[110px] resize-y`}
-                                />
-                              </div>
-                              <div className="flex justify-end">
-                                <Button type="submit" disabled={isSubmittingEoi}>
-                                  {isSubmittingEoi ? t(lang, "eoiSubmitting") : t(lang, "eoiSubmitButton")}
-                                </Button>
-                              </div>
-                            </form>
-                          )}
-                        </DialogContent>
-                      </Dialog>
-                    </div>
+                            ) : (
+                              <form onSubmit={handleEoiSubmit} className="space-y-4">
+                                <div className="grid gap-1.5">
+                                  <Label htmlFor="eoi-first-name" className={LABEL_CLASS}>
+                                    {t(lang, "formFirstNameLabel")} <span className="text-red-500">*</span>
+                                  </Label>
+                                  <Input
+                                    id="eoi-first-name"
+                                    value={eoiForm.firstName}
+                                    onChange={handleEoiInputChange("firstName")}
+                                    className={FIELD_CLASS}
+                                  />
+                                </div>
+                                <div className="grid gap-1.5">
+                                  <Label htmlFor="eoi-last-name" className={LABEL_CLASS}>
+                                    {t(lang, "formLastNameLabel")} <span className="text-red-500">*</span>
+                                  </Label>
+                                  <Input
+                                    id="eoi-last-name"
+                                    value={eoiForm.lastName}
+                                    onChange={handleEoiInputChange("lastName")}
+                                    className={FIELD_CLASS}
+                                  />
+                                </div>
+                                <div className="grid gap-1.5">
+                                  <Label htmlFor="eoi-email" className={LABEL_CLASS}>
+                                    {t(lang, "formPrimaryEmailLabel")} <span className="text-red-500">*</span>
+                                  </Label>
+                                  <Input
+                                    id="eoi-email"
+                                    type="email"
+                                    value={eoiForm.email}
+                                    onChange={handleEoiInputChange("email")}
+                                    className={FIELD_CLASS}
+                                  />
+                                </div>
+                                <div className="grid gap-1.5">
+                                  <Label htmlFor="eoi-interest" className={LABEL_CLASS}>
+                                    {t(lang, "eoiInterestLabel")} <span className="text-red-500">*</span>
+                                  </Label>
+                                  <Input
+                                    id="eoi-interest"
+                                    value={eoiForm.interest}
+                                    onChange={handleEoiInputChange("interest")}
+                                    placeholder={t(lang, "eoiInterestPlaceholder")}
+                                    className={FIELD_CLASS}
+                                  />
+                                </div>
+                                <div className="grid gap-1.5">
+                                  <Label htmlFor="eoi-details" className={LABEL_CLASS}>
+                                    {t(lang, "eoiDetailsLabel")}
+                                  </Label>
+                                  <textarea
+                                    id="eoi-details"
+                                    value={eoiForm.details}
+                                    onChange={handleEoiInputChange("details")}
+                                    className={`${FIELD_CLASS} min-h-[110px] resize-y`}
+                                  />
+                                </div>
+                                <div className="flex justify-end">
+                                  <Button type="submit" disabled={isSubmittingEoi}>
+                                    {isSubmittingEoi ? t(lang, "eoiSubmitting") : t(lang, "eoiSubmitButton")}
+                                  </Button>
+                                </div>
+                              </form>
+                            )}
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+                    ) : null}
                   </aside>
                 </div>
-                <div className="space-y-6">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                    <div className="space-y-1.5">
-                        <h2 id="whats-on-heading" className="text-2xl font-semibold text-slate-900">
-                          {t(lang, "whatsOnHeading")}
-                        </h2>
-                      <p className="text-sm text-muted-foreground">{t(lang, "whatsOnSubheading")}</p>
-                    </div>
-                    <a
-                      href="https://www.study.nsw.gov.au/events"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-sm font-medium text-teal-600 hover:text-teal-700 transition inline-flex items-center gap-1"
-                    >
-                      {t(lang, "announcementsLink")} <span aria-hidden="true">â†—</span>
-                    </a>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {UPCOMING_ACTIVITIES.map((activity) => (
-                      <div
-                        key={activity.id}
-                        className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-3 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <h3 className="text-lg font-semibold text-slate-900">{t(lang, activity.titleKey)}</h3>
-                          <Megaphone className="h-4 w-4 text-teal-500 shrink-0" aria-hidden="true" />
-                        </div>
-                        <p className="text-sm font-medium text-slate-600">{t(lang, activity.scheduleKey)}</p>
-                        <p className="text-sm text-muted-foreground">{t(lang, activity.descriptionKey)}</p>
+                {SHOW_WHATS_ON_SECTION ? (
+                  <div className="space-y-6">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                      <div className="space-y-1.5">
+                          <h2 id="whats-on-heading" className="text-2xl font-semibold text-slate-900">
+                            {t(lang, "whatsOnHeading")}
+                          </h2>
+                        <p className="text-sm text-muted-foreground">{t(lang, "whatsOnSubheading")}</p>
                       </div>
-                    ))}
+                      <a
+                        href="https://www.study.nsw.gov.au/events"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sm font-medium text-teal-600 hover:text-teal-700 transition inline-flex items-center gap-1"
+                      >
+                        {t(lang, "announcementsLink")} <span aria-hidden="true">â†—</span>
+                      </a>
+                    </div>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {UPCOMING_ACTIVITIES.map((activity) => (
+                        <div
+                          key={activity.id}
+                          className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 space-y-3 transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <h3 className="text-lg font-semibold text-slate-900">{t(lang, activity.titleKey)}</h3>
+                            <Megaphone className="h-4 w-4 text-teal-500 shrink-0" aria-hidden="true" />
+                          </div>
+                          <p className="text-sm font-medium text-slate-600">{t(lang, activity.scheduleKey)}</p>
+                          <p className="text-sm text-muted-foreground">{t(lang, activity.descriptionKey)}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             </div>
           </div>
